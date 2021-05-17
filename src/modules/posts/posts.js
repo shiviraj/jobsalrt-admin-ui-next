@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {makeStyles} from "@material-ui/core/styles";
-import PostContainer from "./components/PostContainer";
+import PostsContainer from "./components/PostsContainer";
 import FilterContainer from "./components/FilterContainer";
 
 const useStyles = makeStyles(theme => ({
@@ -19,7 +19,7 @@ const Posts = () => {
   const [filters, setFilters] = useState({})
 
   return <div className={classes.root}>
-    <PostContainer filters={filters}/>
+    <PostsContainer filters={filters}/>
     <FilterContainer applyFilter={setFilters} selectedFilters={filters}/>
   </div>
 }
