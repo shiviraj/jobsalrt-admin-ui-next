@@ -1,14 +1,12 @@
 import user from "./modules/user";
 
-let API = {}
-let API_OPTIONS = {}
+const bffUrl = process.env.JOBSALRT_BFF_URL || "http://localhost:3001";
 
-export const init = options => {
-  API_OPTIONS = {...options}
-  API_OPTIONS.JOBSALRT_ADMIN_BFF_BASE_URL = "http://localhost:3001"
-  API.user = user(API_OPTIONS.JOBSALRT_ADMIN_BFF_BASE_URL)
+const init = () => {
+  const API = {}
+  API.user = user(bffUrl)
+  return API
 }
 
-init()
-
+const API = init()
 export default API

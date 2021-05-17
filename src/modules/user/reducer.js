@@ -1,4 +1,15 @@
-import {LOG_IN, LOG_IN_ERROR, LOG_IN_SUCCESS, loginError, loginSuccess,} from './actions'
+import {
+  LOG_IN,
+  LOG_IN_ERROR,
+  LOG_IN_SUCCESS,
+  loginError,
+  loginSuccess,
+  VALIDATE_USER,
+  VALIDATE_USER_ERROR,
+  VALIDATE_USER_SUCCESS,
+  validateUserError,
+  validateUserSuccess,
+} from './actions'
 
 import {Cmd, loop} from 'redux-loop'
 import API from '../../API'
@@ -28,6 +39,24 @@ const userReducer = (state = defaultState(), action) => {
     }
 
     case LOG_IN_ERROR: {
+      return {...state, error: true, loading: false, errorMessage: "Invalid Credentials, Try Again!!"}
+    }
+
+    case VALIDATE_USER:
+      return loop(
+        {...state, loading: true, error: false, errorMessage: null, data: null},
+        Cmd.run(API.user.validateUser, {
+          successActionCreator: validateUserSuccess,
+          failActionCreator: validateUserError
+        })
+      )
+
+    case VALIDATE_USER_SUCCESS: {
+      const {data} = action.payload
+      return {...state, loading: false, data: {...data}}
+    }
+
+    case VALIDATE_USER_ERROR: {
       return {...state, error: true, loading: false, errorMessage: "Invalid Credentials, Try Again!!"}
     }
 

@@ -3,10 +3,12 @@ import {makeStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
 import {Typography} from "@material-ui/core";
-import FormInput from "../../../common/components/FormInput";
-import ButtonWithLoader from "../../../common/components/ButtonWithLoader";
-import store from "../../../store";
-import {login} from "../actions";
+import FormInput from "../../common/components/FormInput";
+import ButtonWithLoader from "../../common/components/ButtonWithLoader";
+import API from "../../API";
+import {setStorage} from "../../utils/storage";
+import {SessionStorageKeys} from "../../constants/storage";
+import {redirectTo} from "../../utils/routing";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,9 +16,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     minWidth: 300,
     transform: 'translateZ(0)',
-    '@media all and (-ms-high-contrast: none)': {
-      display: 'none',
-    },
+    '@media all and (-ms-high-contrast: none)': {display: 'none',},
   },
   modal: {
     display: 'flex',
@@ -34,10 +34,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column"
   },
-  button: {
-    marginTop: theme.spacing(1),
-  },
-  error: {color: "red"}
+  button: {marginTop: theme.spacing(1),},
+  error: {color: theme.palette.error.main}
 }));
 
 const Login = () => {
@@ -49,16 +47,16 @@ const Login = () => {
   const [password, setPwd] = useState('');
   const rootRef = useRef(null);
 
-  const handleChange = () => {
-    const {user} = store.getState()
-    setError(user.errorMessage)
-    setLoading(user.loading)
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    store.subscribe(handleChange)
-    store.dispatch(login(email, password))
+    setLoading(true)
+    API.user.login({email, password})
+      .then(({data}) => (setStorage(SessionStorageKeys.AUTH, JSON.stringify(data))))
+      .catch(() => setError("Invalid Credentials, Try Again!!"))
+      .then(() => {
+        setLoading(false)
+        redirectTo("/")
+      })
   };
 
   return (<div className={classes.root} ref={rootRef}>

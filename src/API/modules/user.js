@@ -7,9 +7,8 @@ const user = (host = '') => {
       const options = {data: payload, method: METHODS.POST}
       return utils.fetch(`${host}/api/user/sign-in`, options)
     },
-    validateUser(payload) {
-      const options = {data: payload, method: METHODS.POST}
-      return utils.fetch(`${host}/api/user/sign-in`, options)
+    validateUser() {
+      return utils.fetch(`${host}/api/user/validate`, {method: METHODS.GET})
     }
   }
 }
