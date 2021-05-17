@@ -53,11 +53,11 @@ const userReducer = (state = defaultState(), action) => {
 
     case VALIDATE_USER_SUCCESS: {
       const {data} = action.payload
-      return {...state, loading: false, data: {...data}}
+      return {...state, loading: false, data: data}
     }
 
     case VALIDATE_USER_ERROR: {
-      return {...state, error: true, loading: false, errorMessage: "Invalid Credentials, Try Again!!"}
+      return {...state, error: true, loading: false, errorMessage: "User not found!!"}
     }
 
     default:

@@ -29,7 +29,6 @@ const MyApp = ({Component, pageProps, ...rest}) => {
 
 const WithValidatedProfile = ({children, ...rest}) => {
   useEffect(() => {
-    // console.log("Router", Router.pathname, rest)
     if (shouldValidateUserFor(Router.pathname || rest.router.pathname)) {
       store.dispatch(validateUser())
     }
