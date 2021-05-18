@@ -4,6 +4,7 @@ import {Button, Chip, Divider, Typography} from "@material-ui/core";
 import FilterOptions from "./FilterOptions";
 import {Close} from "@material-ui/icons";
 import store from "../../../store";
+import {getPosts, postsCount} from "../actions";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -25,36 +26,40 @@ const useStyles = makeStyles(theme => ({
 
 const SelectedOptions = ({filters, classes, onclick}) => {
   return Object.keys(filters).map((keyName) =>
-    filters[keyName].map(({name, value, checked}, index) =>
-      checked && <Button variant="contained"
-                         key={`${keyName}_${index}`}
-                         onClick={() => onclick(keyName, value)}
-                         className={classes.filter}><Close fontSize="small"/> &nbsp; {name} </Button>
+    filters[keyName].map((value, index) => {
+        const options = filterOptions[keyName].find(opt => opt.value === value);
+        return <Button variant="contained"
+                       key={`${keyName}_${index}`}
+                       onClick={() => onclick(keyName, value)}
+                       className={classes.filter}>
+          <Close fontSize="small"/>&nbsp; {options.name}
+        </Button>;
+      }
     )
   )
 };
 
 const filterOptions = {
   status: [
-    {name: "Verified", value: "VERIFIED", checked: false},
-    {name: "Not Verified", value: "NOT_VERIFIED", checked: false},
-    {name: "Disabled", value: "DISABLED", checked: false}
+    {name: "Verified", value: "VERIFIED"},
+    {name: "Not Verified", value: "NOT_VERIFIED"},
+    {name: "Disabled", value: "DISABLED"}
   ],
   formType: [
-    {name: "Online", value: "ONLINE", checked: false},
-    {name: "Offline", value: "OFFLINE", checked: false}
+    {name: "Online", value: "ONLINE"},
+    {name: "Offline", value: "OFFLINE"}
   ],
   type: [
-    {name: "Latest Job", value: "LATEST_JOB", checked: false},
-    {name: "Admit Card", value: "ADMIT_CARD", checked: false},
-    {name: "Result", value: "RESULT", checked: false},
-    {name: "Syllabus", value: "SYLLABUS", checked: false},
-    {name: "Answer Key", value: "ANSWER_KEY", checked: false},
-    {name: "Admission", value: "ADMISSION", checked: false},
+    {name: "Latest Job", value: "LATEST_JOB"},
+    {name: "Admit Card", value: "ADMIT_CARD"},
+    {name: "Result", value: "RESULT"},
+    {name: "Syllabus", value: "SYLLABUS"},
+    {name: "Answer Key", value: "ANSWER_KEY"},
+    {name: "Admission", value: "ADMISSION"},
   ],
   isUpdateAvailable: [
-    {name: "Update Available", value: true, checked: false},
-    {name: "No Update Available", value: false, checked: false},
+    {name: "Update Available", value: true},
+    {name: "No Update Available", value: false},
   ],
 }
 
@@ -72,32 +77,37 @@ const FilterContainer = () => {
     )
   }, [filters])
 
-
-  const handleChange = (key, value) => {
-    const clickedOption = filters[key].find(obj => obj.value === value);
-    clickedOption.checked = !clickedOption.checked
-    setFilters({...filters})
+  const remove = (filters, key, value) => {
+    const list = filters[key]
+    const index = list.indexOf(value)
+    filters[key] = list.slice(0, index).concat(list.slice(index + 1))
+    if (filters[key].length === 0) delete filters[key]
   }
 
-  const handleClearAll = () => {
-    Object.keys(filters).forEach(keyName => filters[keyName].forEach(opt => opt.checked = false))
+  const handleChange = (key, value) => {
+    if (!filters[key]) filters[key] = []
+    if (filters[key].includes(value)) remove(filters, key, value)
+    else filters[key].push(value)
     setFilters({...filters})
   }
 
   useEffect(() => {
-    // applyFilter(getSelectedFilters())
-  }, [getSelectedFilters])
+    store.dispatch(getPosts({filters, currentPage: 1}))
+    store.dispatch(postsCount({filters, currentPage: 1}))
+  }, [filters])
 
   return <div className={classes.root}>
     <div className={classes.titleBar}>
       <Typography variant="h5" className={classes.title}>Filters</Typography>
-      <Chip label="&#x2715; &nbsp; Clear All" onClick={handleClearAll}/>
+      <Chip label="&#x2715; &nbsp; Clear All" onClick={() => setFilters({})}/>
     </div>
     <SelectedOptions filters={filters} classes={classes} onclick={handleChange}/>
     <Divider className={classes.divider}/>
     {
-      Object.keys(filters).map(key =>
-        <FilterOptions key={key} options={filters[key]} handleChange={handleChange} keyName={key} title={key}/>
+      Object.keys(filterOptions).map(key =>
+        <FilterOptions key={key} options={filterOptions[key]} filters={filters[key]}
+                       onChange={(value) => handleChange(key, value)}
+                       title={key}/>
       )
     }
   </div>

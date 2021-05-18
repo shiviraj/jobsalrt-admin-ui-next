@@ -8,8 +8,9 @@ export const GET_POSTS_SUCCESS = NAMESPACE + 'GET_POSTS_SUCCESS'
 export const GET_POSTS_ERROR = NAMESPACE + 'GET_POSTS_ERROR'
 
 
-const postsCount = () => ({
+const postsCount = (payload) => ({
   type: POSTS_COUNT,
+  payload
 })
 
 const postsCountSuccess = ({data}) => ({

@@ -49,8 +49,9 @@ const defaultState = () => ({
 const userReducer = (state = defaultState(), action) => {
   switch (action.type) {
     case POSTS_COUNT:
+      state = {...state, loading: true, error: false, errorMessage: null, ...action.payload}
       return loop(
-        {...state, loading: true, error: false, errorMessage: null},
+        state,
         Cmd.run(API.posts.postsCount, {
           args: [state.currentPage, state.filters, state.sortBy, state.sortOrder],
           successActionCreator: postsCountSuccess,

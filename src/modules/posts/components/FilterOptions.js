@@ -10,26 +10,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const FilterOptions = ({options, handleChange, keyName, title}) => {
+const FilterOptions = ({options, filters = [], onChange, title}) => {
   const classes = useStyles()
 
   const handleClearAll = () => {
-    const selectedOptions = options.filter(option => option.checked);
-    selectedOptions.forEach(option => handleChange(keyName, option.value))
+    filters.forEach((value) => {
+      onChange(value)
+    })
   }
 
   return <Accordion square defaultExpanded>
-    <AccordionSummary expandIcon={<ExpandMore/>} aria-controls={keyName} id={keyName}>
+    <AccordionSummary expandIcon={<ExpandMore/>}>
       <Typography variant="h5" className={classes.title}>{title}</Typography>
     </AccordionSummary>
     <AccordionDetails>
-      <FormControl component="fieldset" key={keyName}>
-        {options.some(option => option.checked) &&
+      <FormControl component="fieldset">
+        {filters && filters.length !== 0 &&
         <Chip label="&#x2715; &nbsp; Clear All" className={classes.chip} onClick={handleClearAll}/>}
         {
           options.map((option, index) => {
             return <FormCheckBox key={`${option.name}_${index}`} value={option.value} label={option.name}
-                                 checked={option.checked} onChange={(value) => handleChange(keyName, value)}/>
+                                 checked={filters.includes(option.value)} onChange={onChange}/>
           })
         }
       </FormControl>

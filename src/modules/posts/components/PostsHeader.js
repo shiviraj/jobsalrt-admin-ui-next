@@ -20,14 +20,16 @@ const PostsHeader = () => {
   const classes = useStyles()
   const {posts} = store.getState()
   const [page, setPage] = useState(posts.currentPage)
+  const [totalPosts, setTotalPosts] = useState(posts.totalPosts)
 
   store.subscribe(() => {
     const {posts} = store.getState()
     setPage(posts.currentPage)
+    setTotalPosts(posts.totalPosts)
   })
 
   const limit = 48
-  const start = Math.max((page - 1) * limit + 1, 0);
+  const start = Math.min(posts.totalPosts, (page - 1) * limit + 1);
   const end = Math.min(posts.totalPosts, page * limit);
 
   return <React.Fragment>
@@ -35,7 +37,7 @@ const PostsHeader = () => {
       <div className={classes.titleContainer}>
         <Typography variant="h4">All Posts</Typography>
         <Typography variant="subtitle1" className={classes.postCounts}>
-          (Showing {start} - {end} posts of {posts.totalPosts} posts)
+          (Showing {start} - {end} posts of {totalPosts} posts)
         </Typography>
       </div>
       {/*<AddNewPost triggerReload={triggerReload}/>*/}
