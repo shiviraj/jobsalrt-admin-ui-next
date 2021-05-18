@@ -12,51 +12,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const PostsContainer = ({filters}) => {
+const PostsContainer = ({currentPage, totalPosts, totalPage, getPosts, posts}) => {
   const classes = useStyles()
 
-  // const [posts, setPosts] = useState(null)
-  // const [page, setPage] = useState(0)
-  // const [pageCount, setPageCount] = useState({})
-  // const [sort, setSort] = useState({sortBy: "createdAt", sortOrder: "desc"})
-
-  // const getPostsBasedOnFiltersAndSort = (pageNo) => {
-  //   setPosts(null)
-  //   // return fetchApi({type: "GET_POSTS", payload: {page: pageNo, filters, ...sort}})
-  //   //   .then(posts => setPosts(posts))
-  //   //   .catch(e => ({}))
-  // };
-  //
-  // const getPostsPageCount = () => {
-  //   // fetchApi({type: "GET_POSTS_PAGE_COUNT", payload: {filters, ...sort}})
-  //   //   .then((pageCount) => setPageCount(pageCount))
-  //   //   .catch(e => ({}))
-  // };
-  //
-  // const triggerReload = () => {
-  //   getPostsPageCount()
-  //   // getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
-  // }
-  //
-  // useEffect(() => {
-  //   getPostsPageCount();
-  //   // getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
-  // }, [filters, sort])
-  //
-  // useEffect(() => {
-  //   // getPostsBasedOnFiltersAndSort(page).then(() => ({}))
-  // }, [page])
-
   return <div className={classes.root}>
-    <PostsHeader/>
+    <PostsHeader currentPage={currentPage} totalPosts={totalPosts}/>
     <Divider className={classes.divider}/>
 
     <div className={classes.postContainer}>
-      <AllPosts/>
+      <AllPosts posts={posts}/>
     </div>
 
     <Divider className={classes.divider}/>
-    <PostsFooter/>
+    <PostsFooter currentPage={currentPage} totalPage={totalPage} getPosts={getPosts}/>
   </div>
 }
 

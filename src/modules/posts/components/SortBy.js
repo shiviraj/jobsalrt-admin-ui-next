@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Tab, Tabs, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import store from "../../../store";
-import {SORT} from "../reducer";
 import {getPosts} from "../actions";
+import {SORT} from "../../../constants/sort";
 
 const useStyles = makeStyles(theme => ({
   root: {

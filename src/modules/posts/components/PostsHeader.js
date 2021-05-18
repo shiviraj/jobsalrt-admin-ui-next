@@ -1,8 +1,7 @@
 import {Typography} from "@material-ui/core";
-import React, {useState} from "react";
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import SortBy from "./SortBy";
-import store from "../../../store";
 
 const useStyles = makeStyles(theme => ({
   titleContainer: {
@@ -16,21 +15,12 @@ const useStyles = makeStyles(theme => ({
   postCounts: {marginLeft: theme.spacing(2)},
 }));
 
-const PostsHeader = () => {
+const PostsHeader = ({currentPage: page, totalPosts}) => {
   const classes = useStyles()
-  const {posts} = store.getState()
-  const [page, setPage] = useState(posts.currentPage)
-  const [totalPosts, setTotalPosts] = useState(posts.totalPosts)
-
-  store.subscribe(() => {
-    const {posts} = store.getState()
-    setPage(posts.currentPage)
-    setTotalPosts(posts.totalPosts)
-  })
 
   const limit = 48
-  const start = Math.min(posts.totalPosts, (page - 1) * limit + 1);
-  const end = Math.min(posts.totalPosts, page * limit);
+  const start = Math.min(totalPosts, (page - 1) * limit + 1);
+  const end = Math.min(totalPosts, page * limit);
 
   return <React.Fragment>
     <div className={classes.titleContainer}>

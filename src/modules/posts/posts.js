@@ -2,8 +2,6 @@ import React, {useEffect} from 'react'
 import {makeStyles} from "@material-ui/core/styles";
 import PostsContainer from "./components/PostsContainer";
 import FilterContainer from "./components/FilterContainer";
-import store from "../../store";
-import {postsCount} from "./actions";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,16 +14,32 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Posts = () => {
+const Posts = (props) => {
+  const {
+    loading,
+    error,
+    errorMessage,
+    data,
+    filters,
+    currentPage,
+    totalPage,
+    totalPosts,
+    sortBy,
+    sortOrder,
+    postsCount,
+    getPosts
+  } = props
+
   const classes = useStyles()
 
   useEffect(() => {
-    store.dispatch(postsCount())
+    postsCount()
   }, [])
 
   return <div className={classes.root}>
-    <PostsContainer/>
-    <FilterContainer/>
+    <PostsContainer totalPosts={totalPosts} currentPage={currentPage} totalPage={totalPage} getPosts={getPosts}
+                    posts={data}/>
+    <FilterContainer filters={filters} getPosts={getPosts} postsCount={postsCount}/>
   </div>
 }
 

@@ -1,30 +1,27 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, Chip, Divider, Typography} from "@material-ui/core";
 import FilterOptions from "./FilterOptions";
 import {Close} from "@material-ui/icons";
-import store from "../../../store";
-import {getPosts, postsCount} from "../actions";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-      width: '18%',
-      backgroundColor: theme.palette.common.white,
-      paddingTop: theme.spacing(2),
-    },
-    titleBar: {
-      display: "flex",
-      justifyContent: "space-between",
-      padding: theme.spacing(0, 2)
-    },
-    title: {marginBottom: theme.spacing(1)},
-    filter: {backgroundColor: theme.palette.grey[300], margin: theme.spacing(0.5)},
-    divider: {marginTop: theme.spacing(2)}
-  }))
-;
+  root: {
+    width: '18%',
+    backgroundColor: theme.palette.common.white,
+    paddingTop: theme.spacing(2),
+  },
+  titleBar: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: theme.spacing(0, 2)
+  },
+  title: {marginBottom: theme.spacing(1)},
+  filter: {backgroundColor: theme.palette.grey[300], margin: theme.spacing(0.5)},
+  divider: {marginTop: theme.spacing(2)}
+}));
 
 
-const SelectedOptions = ({filters, classes, onclick}) => {
+const SelectedOptions = ({filters = {}, classes, onclick}) => {
   return Object.keys(filters).map((keyName) =>
     filters[keyName].map((value, index) => {
         const options = filterOptions[keyName].find(opt => opt.value === value);
@@ -64,18 +61,13 @@ const filterOptions = {
 }
 
 
-const FilterContainer = () => {
+const FilterContainer = ({filters, getPosts, postsCount}) => {
   const classes = useStyles()
-  const posts = store.getState().posts
-  const [filters, setFilters] = useState(posts.filters)
 
-  const getSelectedFilters = useCallback(() => {
-    return Object.keys(filters).reduce((selectedFilters, keyName) => {
-        selectedFilters[keyName] = filters[keyName].filter(option => option.checked).map(opt => opt.value)
-        return selectedFilters
-      }, {}
-    )
-  }, [filters])
+  const handleClearAll = () => {
+    postsCount({currentPage: 1, filters: {}})
+    getPosts({currentPage: 1, filters: {}})
+  };
 
   const remove = (filters, key, value) => {
     const list = filters[key]
@@ -88,18 +80,15 @@ const FilterContainer = () => {
     if (!filters[key]) filters[key] = []
     if (filters[key].includes(value)) remove(filters, key, value)
     else filters[key].push(value)
-    setFilters({...filters})
-  }
 
-  useEffect(() => {
-    store.dispatch(getPosts({filters, currentPage: 1}))
-    store.dispatch(postsCount({filters, currentPage: 1}))
-  }, [filters])
+    postsCount({currentPage: 1, filters})
+    getPosts({currentPage: 1, filters})
+  }
 
   return <div className={classes.root}>
     <div className={classes.titleBar}>
       <Typography variant="h5" className={classes.title}>Filters</Typography>
-      <Chip label="&#x2715; &nbsp; Clear All" onClick={() => setFilters({})}/>
+      <Chip label="&#x2715; &nbsp; Clear All" onClick={handleClearAll}/>
     </div>
     <SelectedOptions filters={filters} classes={classes} onclick={handleChange}/>
     <Divider className={classes.divider}/>

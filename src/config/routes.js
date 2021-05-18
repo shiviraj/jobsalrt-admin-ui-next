@@ -35,20 +35,7 @@ function serializeQueryParams(obj) {
   )
 }
 
-function getNextJsRoutes(url, params = {}, queryParams = {}) {
-  const serializedQueryParams = serializeQueryParams(queryParams)
-
-  const interpolatedUrl = Object.keys(params).reduce((urlString, paramKey) => {
-    return urlString.replace(`[${paramKey}]`, params[paramKey])
-  }, url)
-
-  return {
-    url: url + serializedQueryParams,
-    as: interpolatedUrl + serializedQueryParams
-  }
-}
-
-function matchUrl(urlConfig, path = "") {
+const matchUrl = (urlConfig, path = "") => {
   const urlComponents = urlConfig.split('/')
   const pathComponents = path.split('/')
 
@@ -58,11 +45,11 @@ function matchUrl(urlConfig, path = "") {
     if (component.includes('[')) return true
     return component === pathComponents[index]
   })
-}
+};
 
 function shouldValidateUserFor(pagePath) {
   const routeConfig = Object.values(ROUTES).find(({url: urlConfig}) => matchUrl(urlConfig, pagePath))
   return !(routeConfig && routeConfig.options && routeConfig.options.skipUserValidation)
 }
 
-export {ROUTES, getNextJsRoutes, shouldValidateUserFor}
+export {ROUTES, shouldValidateUserFor}
