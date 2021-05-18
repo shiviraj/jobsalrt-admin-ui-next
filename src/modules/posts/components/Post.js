@@ -66,10 +66,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Post = ({post}) => {
+const Post = ({post, loading, deletePost, reloadPosts}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const boxBackgrounds = {
     NOT_VERIFIED: classes.error,
@@ -78,14 +77,9 @@ const Post = ({post}) => {
   }
 
   const handleDelete = () => {
-    // setIsDeleting(true)
-    // fetchApi({type: "DELETE_POST", payload: {url: post.url}})
-    //   .then(() => {
-    //     setOpen(false)
-    //     triggerReload()
-    //   })
-    //   .catch(() => ({}))
-    //   .then(() => setIsDeleting(false))
+    deletePost(post.url);
+    reloadPosts({currentPage: 1})
+    setOpen(false)
   }
 
   return <Box m={0.5} p={1} className={`${classes.root} ${boxBackgrounds[post.status]}`}>
@@ -120,7 +114,7 @@ const Post = ({post}) => {
         <Typography variant="h5">Do you really want to delete?</Typography>
         <div className={classes.buttonContainer}>
           <Button variant="contained" onClick={() => setOpen(false)}>Cancel</Button>
-          <ButtonWithLoader loading={isDeleting} variant="contained" className={classes.deleteButton}
+          <ButtonWithLoader loading={loading} variant="contained" className={classes.deleteButton}
                             onClick={handleDelete}>Delete</ButtonWithLoader>
         </div>
       </div>

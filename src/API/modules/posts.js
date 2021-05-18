@@ -11,6 +11,15 @@ const posts = (host = '') => {
       const options = {data: {filters, sortBy, sortOrder}, method: METHODS.POST}
       return utils.fetch(`${host}/api/posts/page/${currentPage}`, options)
     },
+    addNewPost(data) {
+      const options = {data, method: METHODS.POST}
+      return utils.fetch(`${host}/api/posts`, options)
+    },
+    deletePost(url) {
+      console.log(url)
+      const options = {method: METHODS.DELETE}
+      return utils.fetch(`${host}/api/posts/${url}`, options)
+    },
   }
 }
 

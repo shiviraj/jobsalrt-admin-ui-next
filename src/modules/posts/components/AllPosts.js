@@ -8,12 +8,13 @@ const useStyles = makeStyles(theme => ({
   noPost: {margin: theme.spacing(20), color: theme.palette.error.light},
 }));
 
-const AllPosts = ({posts}) => {
+const AllPosts = ({posts, deletePost, loading, reloadPosts}) => {
   const classes = useStyles()
   if (!posts) return Array(12).fill("").map((_, index) => <PostSkeleton key={`key-${index}`}/>)
 
   return posts && posts.length
-    ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`}/>)
+    ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`} deletePost={deletePost}
+                                       reloadPosts={reloadPosts} loading={loading}/>)
     : <Typography variant="h1" className={classes.noPost}>No Post Found...</Typography>
 }
 

@@ -2,6 +2,7 @@ import {Typography} from "@material-ui/core";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import SortBy from "./SortBy";
+import AddNewPost from "./AddNewpPost";
 
 const useStyles = makeStyles(theme => ({
   titleContainer: {
@@ -15,12 +16,12 @@ const useStyles = makeStyles(theme => ({
   postCounts: {marginLeft: theme.spacing(2)},
 }));
 
-const PostsHeader = ({currentPage: page, totalPosts}) => {
+const PostsHeader = ({currentPage, totalPosts, addNewPost, loading, reloadPosts, getPosts, sortBy, sortOrder}) => {
   const classes = useStyles()
 
   const limit = 48
-  const start = Math.min(totalPosts, (page - 1) * limit + 1);
-  const end = Math.min(totalPosts, page * limit);
+  const start = Math.min(totalPosts, (currentPage - 1) * limit + 1);
+  const end = Math.min(totalPosts, currentPage * limit);
 
   return <React.Fragment>
     <div className={classes.titleContainer}>
@@ -30,9 +31,9 @@ const PostsHeader = ({currentPage: page, totalPosts}) => {
           (Showing {start} - {end} posts of {totalPosts} posts)
         </Typography>
       </div>
-      {/*<AddNewPost triggerReload={triggerReload}/>*/}
+      <AddNewPost addNewPost={addNewPost} loading={loading} reloadPosts={reloadPosts}/>
     </div>
-    <SortBy/>
+    <SortBy getPosts={getPosts} sortBy={sortBy} sortOrder={sortOrder}/>
   </React.Fragment>
 }
 

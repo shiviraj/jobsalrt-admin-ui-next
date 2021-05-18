@@ -15,30 +15,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Posts = (props) => {
-  const {
-    loading,
-    error,
-    errorMessage,
-    data,
-    filters,
-    currentPage,
-    totalPage,
-    totalPosts,
-    sortBy,
-    sortOrder,
-    postsCount,
-    getPosts
-  } = props
+  const {filters, postsCount, reload, getPosts} = props
 
   const classes = useStyles()
 
   useEffect(() => {
     postsCount()
-  }, [])
+    getPosts()
+  }, [reload])
 
   return <div className={classes.root}>
-    <PostsContainer totalPosts={totalPosts} currentPage={currentPage} totalPage={totalPage} getPosts={getPosts}
-                    posts={data}/>
+    <PostsContainer {...props}/>
     <FilterContainer filters={filters} getPosts={getPosts} postsCount={postsCount}/>
   </div>
 }
