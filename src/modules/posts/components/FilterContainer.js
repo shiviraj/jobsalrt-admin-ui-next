@@ -3,6 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {Button, Chip, Divider, Typography} from "@material-ui/core";
 import FilterOptions from "./FilterOptions";
 import {Close} from "@material-ui/icons";
+import store from "../../../store";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,32 +34,35 @@ const SelectedOptions = ({filters, classes, onclick}) => {
   )
 };
 
+const filterOptions = {
+  status: [
+    {name: "Verified", value: "VERIFIED", checked: false},
+    {name: "Not Verified", value: "NOT_VERIFIED", checked: false},
+    {name: "Disabled", value: "DISABLED", checked: false}
+  ],
+  formType: [
+    {name: "Online", value: "ONLINE", checked: false},
+    {name: "Offline", value: "OFFLINE", checked: false}
+  ],
+  type: [
+    {name: "Latest Job", value: "LATEST_JOB", checked: false},
+    {name: "Admit Card", value: "ADMIT_CARD", checked: false},
+    {name: "Result", value: "RESULT", checked: false},
+    {name: "Syllabus", value: "SYLLABUS", checked: false},
+    {name: "Answer Key", value: "ANSWER_KEY", checked: false},
+    {name: "Admission", value: "ADMISSION", checked: false},
+  ],
+  isUpdateAvailable: [
+    {name: "Update Available", value: true, checked: false},
+    {name: "No Update Available", value: false, checked: false},
+  ],
+}
 
-const FilterContainer = ({applyFilter}) => {
+
+const FilterContainer = () => {
   const classes = useStyles()
-  const [filters, setFilters] = useState({
-    status: [
-      {name: "Verified", value: "VERIFIED", checked: false},
-      {name: "Not Verified", value: "NOT_VERIFIED", checked: false},
-      {name: "Disabled", value: "DISABLED", checked: false}
-    ],
-    formType: [
-      {name: "Online", value: "ONLINE", checked: false},
-      {name: "Offline", value: "OFFLINE", checked: false}
-    ],
-    type: [
-      {name: "Latest Job", value: "LATEST_JOB", checked: false},
-      {name: "Admit Card", value: "ADMIT_CARD", checked: false},
-      {name: "Result", value: "RESULT", checked: false},
-      {name: "Syllabus", value: "SYLLABUS", checked: false},
-      {name: "Answer Key", value: "ANSWER_KEY", checked: false},
-      {name: "Admission", value: "ADMISSION", checked: false},
-    ],
-    isUpdateAvailable: [
-      {name: "Update Available", value: true, checked: false},
-      {name: "No Update Available", value: false, checked: false},
-    ],
-  })
+  const posts = store.getState().posts
+  const [filters, setFilters] = useState(posts.filters)
 
   const getSelectedFilters = useCallback(() => {
     return Object.keys(filters).reduce((selectedFilters, keyName) => {
@@ -81,8 +85,8 @@ const FilterContainer = ({applyFilter}) => {
   }
 
   useEffect(() => {
-    applyFilter(getSelectedFilters())
-  }, [applyFilter, getSelectedFilters])
+    // applyFilter(getSelectedFilters())
+  }, [getSelectedFilters])
 
   return <div className={classes.root}>
     <div className={classes.titleBar}>

@@ -1,7 +1,9 @@
-import React, {useState} from 'react'
+import React, {useEffect} from 'react'
 import {makeStyles} from "@material-ui/core/styles";
 import PostsContainer from "./components/PostsContainer";
 import FilterContainer from "./components/FilterContainer";
+import store from "../../store";
+import {postsCount} from "./actions";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,11 +18,14 @@ const useStyles = makeStyles(theme => ({
 
 const Posts = () => {
   const classes = useStyles()
-  const [filters, setFilters] = useState({})
+
+  useEffect(() => {
+    store.dispatch(postsCount())
+  }, [])
 
   return <div className={classes.root}>
-    <PostsContainer filters={filters}/>
-    <FilterContainer applyFilter={setFilters} selectedFilters={filters}/>
+    <PostsContainer/>
+    <FilterContainer/>
   </div>
 }
 

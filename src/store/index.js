@@ -2,9 +2,11 @@ import {compose, createStore} from 'redux'
 import {install} from 'redux-loop'
 import {createReducerManager} from './reducer'
 import userReducer from "../modules/user/reducer";
+import postsReducer from "../modules/posts/reducer";
 
 const staticReducers = {
   user: userReducer,
+  posts: postsReducer
 }
 
 const reduxDevTools = typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

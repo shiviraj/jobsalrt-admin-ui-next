@@ -41,14 +41,14 @@ const Pagination = ({count, page, onChange}) => {
 
   return (<div>
     <IconButton className={classes.button} disabled={page <= 1}
-                onClick={(e) => onChange(e, 1)}><FirstPage/></IconButton>
+                onClick={(e) => onChange(1)}><FirstPage/></IconButton>
     <IconButton className={classes.button} disabled={page <= 1}
-                onClick={(e) => onChange(e, page - 1)}><NavigateBefore/></IconButton>
+                onClick={(e) => onChange(page - 1)}><NavigateBefore/></IconButton>
     {
       ranges.map((pageNumber, index) => {
         return <React.Fragment key={`key-${index}`}>
           <IconButton className={`${classes.button} ${pageNumber === page ? classes.active : ""}`}
-                      onClick={(e) => onChange(e, pageNumber)}>{pageNumber}</IconButton>
+                      onClick={(e) => onChange(pageNumber)}>{pageNumber}</IconButton>
           {
             (ranges[index + 1] && ranges[index + 1] !== pageNumber + 1) &&
             < IconButton className={classes.button} disabled><MoreHoriz/></IconButton>
@@ -57,9 +57,9 @@ const Pagination = ({count, page, onChange}) => {
       })
     }
     <IconButton className={classes.button} disabled={page >= count}
-                onClick={(e) => onChange(e, page + 1)}><NavigateNext/></IconButton>
+                onClick={(e) => onChange(page + 1)}><NavigateNext/></IconButton>
     <IconButton className={classes.button} disabled={page >= count}
-                onClick={(e) => onChange(e, count)}><LastPage/></IconButton>
+                onClick={(e) => onChange(count)}><LastPage/></IconButton>
   </div>)
 }
 

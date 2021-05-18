@@ -24,6 +24,7 @@ const decryptResponseObject = (key, iv, content) => {
 
 const initCrypto = authToken => {
   const secretKey = getSecretKey(authToken)
+  console.log(secretKey)
   return {
     encrypt: encryptRequestPayload.bind(null, secretKey, iv),
     decrypt: decryptResponseObject.bind(null, secretKey, iv)

@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Tab, Tabs, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import store from "../../../store";
+import {SORT} from "../reducer";
+import {getPosts} from "../actions";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -8,9 +11,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
   },
-  tab: {
-    marginLeft: theme.spacing(4)
-  }
+  tab: {marginLeft: theme.spacing(4)}
 }))
 
 const options = [
@@ -19,25 +20,25 @@ const options = [
   {key: "postUpdateDate", name: "Post Update Date"},
 ]
 
-const SortBy = ({sort, setSort}) => {
+const SortBy = () => {
   const classes = useStyles()
-  const [activeTab, setActiveTab] = useState(0)
-  const [sortBy, setSortBy] = useState(sort.sortBy)
-  const [sortOrder, setSortOrder] = useState(sort.sortOrder)
+  const {posts} = store.getState()
 
-  const toggleSortOrder = () => setSortOrder(sortOrder === 'desc' ? "asc" : "desc")
+  const [activeTab, setActiveTab] = useState(0)
+  const [sortBy, setSortBy] = useState(posts.sortBy)
+  const [sortOrder, setSortOrder] = useState(posts.sortOrder)
 
   const handleSetSort = (index) => {
-    if (index === activeTab) toggleSortOrder()
-    else setSortBy(options[index].key)
+    if (index === activeTab) setSortOrder(SORT.sortOrder.toggleSortOrder(sortOrder))
+    else setSortBy(SORT.sortBy.get(index))
     setActiveTab(index)
   }
 
   useEffect(() => {
-    setSort({sortBy, sortOrder})
-  }, [sortOrder, sortBy, setSort])
+    store.dispatch(getPosts({sortOrder, sortBy, currentPage: 1}))
+  }, [sortBy, sortOrder])
 
-  const symbol = sortOrder === "desc" ? "▼" : "▲"
+  const symbol = sortOrder === SORT.sortOrder.DESC ? "▼" : "▲"
 
   return <div className={classes.root}>
     <Typography variant="h6">Sort By </Typography>

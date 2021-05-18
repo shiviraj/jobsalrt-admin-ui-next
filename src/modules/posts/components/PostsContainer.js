@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {Divider} from "@material-ui/core";
 import PostsHeader from "./PostsHeader";
@@ -15,48 +15,48 @@ const useStyles = makeStyles(theme => ({
 const PostsContainer = ({filters}) => {
   const classes = useStyles()
 
-  const [posts, setPosts] = useState(null)
-  const [page, setPage] = useState(0)
-  const [pageCount, setPageCount] = useState({})
-  const [sort, setSort] = useState({sortBy: "createdAt", sortOrder: "desc"})
+  // const [posts, setPosts] = useState(null)
+  // const [page, setPage] = useState(0)
+  // const [pageCount, setPageCount] = useState({})
+  // const [sort, setSort] = useState({sortBy: "createdAt", sortOrder: "desc"})
 
-  const getPostsBasedOnFiltersAndSort = (pageNo) => {
-    setPosts(null)
-    // return fetchApi({type: "GET_POSTS", payload: {page: pageNo, filters, ...sort}})
-    //   .then(posts => setPosts(posts))
-    //   .catch(e => ({}))
-  };
-
-  const getPostsPageCount = () => {
-    // fetchApi({type: "GET_POSTS_PAGE_COUNT", payload: {filters, ...sort}})
-    //   .then((pageCount) => setPageCount(pageCount))
-    //   .catch(e => ({}))
-  };
-
-  const triggerReload = () => {
-    getPostsPageCount()
-    // getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
-  }
-
-  useEffect(() => {
-    getPostsPageCount();
-    // getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
-  }, [filters, sort])
-
-  useEffect(() => {
-    // getPostsBasedOnFiltersAndSort(page).then(() => ({}))
-  }, [page])
+  // const getPostsBasedOnFiltersAndSort = (pageNo) => {
+  //   setPosts(null)
+  //   // return fetchApi({type: "GET_POSTS", payload: {page: pageNo, filters, ...sort}})
+  //   //   .then(posts => setPosts(posts))
+  //   //   .catch(e => ({}))
+  // };
+  //
+  // const getPostsPageCount = () => {
+  //   // fetchApi({type: "GET_POSTS_PAGE_COUNT", payload: {filters, ...sort}})
+  //   //   .then((pageCount) => setPageCount(pageCount))
+  //   //   .catch(e => ({}))
+  // };
+  //
+  // const triggerReload = () => {
+  //   getPostsPageCount()
+  //   // getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
+  // }
+  //
+  // useEffect(() => {
+  //   getPostsPageCount();
+  //   // getPostsBasedOnFiltersAndSort(1).then(() => setPage(1))
+  // }, [filters, sort])
+  //
+  // useEffect(() => {
+  //   // getPostsBasedOnFiltersAndSort(page).then(() => ({}))
+  // }, [page])
 
   return <div className={classes.root}>
-    <PostsHeader count={pageCount} page={page} sort={sort} setSort={setSort}/>
+    <PostsHeader/>
     <Divider className={classes.divider}/>
 
     <div className={classes.postContainer}>
-      <AllPosts posts={posts} triggerReload={triggerReload}/>
+      <AllPosts/>
     </div>
 
     <Divider className={classes.divider}/>
-    <PostsFooter page={page} pageCount={pageCount} setPage={setPageCount}/>
+    <PostsFooter/>
   </div>
 }
 

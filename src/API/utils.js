@@ -9,7 +9,7 @@ export const defaultHeaders = {'Content-Type': 'application/json'}
 const init = () => {
   const auth = getStorage(SessionStorageKeys.AUTH)
   const authToken = auth ? auth.token : ""
-  const encryptionDisabled = process.env.DISABLE_ENCRYPTION || false;
+  const encryptionDisabled = process.env.DISABLE_ENCRYPTION || true;
   initAxios(authToken, encryptionDisabled)
   const headers = encryptionDisabled ? {'disable-encryption': encryptionDisabled} : {}
   return {...defaultHeaders, ...headers, iv: iv.toString("hex"), Authorization: authToken}

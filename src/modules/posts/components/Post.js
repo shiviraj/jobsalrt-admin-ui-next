@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Post = ({post, triggerReload}) => {
+const Post = ({post}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -78,14 +78,14 @@ const Post = ({post, triggerReload}) => {
   }
 
   const handleDelete = () => {
-    setIsDeleting(true)
-    fetchApi({type: "DELETE_POST", payload: {url: post.url}})
-      .then(() => {
-        setOpen(false)
-        triggerReload()
-      })
-      .catch(() => ({}))
-      .then(() => setIsDeleting(false))
+    // setIsDeleting(true)
+    // fetchApi({type: "DELETE_POST", payload: {url: post.url}})
+    //   .then(() => {
+    //     setOpen(false)
+    //     triggerReload()
+    //   })
+    //   .catch(() => ({}))
+    //   .then(() => setIsDeleting(false))
   }
 
   return <Box m={0.5} p={1} className={`${classes.root} ${boxBackgrounds[post.status]}`}>
