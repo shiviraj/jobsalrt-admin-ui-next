@@ -3,6 +3,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Button, Modal, Typography} from "@material-ui/core";
 import FormInput from "../../../common/components/FormInput";
 import ButtonWithLoader from "../../../common/components/ButtonWithLoader";
+import API from "../../../API";
+import {SORT} from "../../../constants/sort";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -19,17 +21,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddNewPost = ({loading, addNewPost, reloadPosts}) => {
+const AddNewPost = ({postsCount, getPosts}) => {
   const classes = useStyles();
   const [source, setSource] = useState("")
   const [open, setOpen] = useState(false);
-
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    addNewPost({source})
-    reloadPosts({currentPage: 1})
-    setOpen(false)
+    setLoading(true)
+    API.posts.addNewPost({source})
+      .then(() => {
+        getPosts({currentPage: 1, sortBy: SORT.sortBy.CREATED_AT, sortOrder: SORT.sortOrder.DESC, filters: {}})
+        postsCount({currentPage: 1})
+      })
+      .catch(() => ({}))
+      .then(() => {
+        setLoading(false)
+        setOpen(false);
+      })
   }
 
   return (<div>

@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {Box, Button, Modal, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import ButtonWithLoader from "../../../common/components/ButtonWithLoader";
+import API from "../../../API";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,9 +67,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Post = ({post, loading, deletePost, reloadPosts}) => {
+const Post = ({post, getPosts, postsCount}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const boxBackgrounds = {
     NOT_VERIFIED: classes.error,
@@ -77,9 +79,17 @@ const Post = ({post, loading, deletePost, reloadPosts}) => {
   }
 
   const handleDelete = () => {
-    deletePost(post.url);
-    reloadPosts({currentPage: 1})
-    setOpen(false)
+    setLoading(true)
+    API.posts.deletePost(post.url)
+      .then(() => {
+        getPosts()
+        postsCount()
+        setOpen(false)
+      })
+      .catch(() => {
+        //TODO error Toast
+      })
+      .then(() => setLoading(false))
   }
 
   return <Box m={0.5} p={1} className={`${classes.root} ${boxBackgrounds[post.status]}`}>

@@ -13,29 +13,17 @@ const useStyles = makeStyles(theme => ({
 
 
 const PostsContainer = (props) => {
-  const {
-    currentPage,
-    totalPosts,
-    totalPage,
-    getPosts,
-    posts,
-    addNewPost,
-    loading,
-    reloadPosts,
-    sortBy,
-    sortOrder,
-    deletePost
-  } = props
+  const {currentPage, totalPosts, totalPage, getPosts, posts, loading, sortBy, sortOrder, postsCount} = props
   const classes = useStyles()
 
   return <div className={classes.root}>
-    <PostsHeader currentPage={currentPage} totalPosts={totalPosts} addNewPost={addNewPost} loading={loading}
-                 reloadPosts={reloadPosts} sortOrder={sortOrder} sortBy={sortBy} getPosts={getPosts}
+    <PostsHeader currentPage={currentPage} totalPosts={totalPosts} sortOrder={sortOrder}
+                 sortBy={sortBy} getPosts={getPosts} postsCount={postsCount}
     />
     <Divider className={classes.divider}/>
 
     <div className={classes.postContainer}>
-      <AllPosts posts={posts} deletePost={deletePost} loading={loading} reloadPosts={reloadPosts}/>
+      <AllPosts posts={posts} loading={loading} getPosts={getPosts} postsCount={postsCount}/>
     </div>
 
     <Divider className={classes.divider}/>

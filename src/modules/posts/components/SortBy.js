@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Tab, Tabs, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {SORT} from "../../../constants/sort";
@@ -27,8 +27,12 @@ const SortBy = ({getPosts, sortBy, sortOrder}) => {
     if (index === activeTab) sort.sortOrder = SORT.sortOrder.toggleSortOrder(sortOrder)
     else sort.sortBy = SORT.sortBy.get(index)
     setActiveTab(index)
-    getPosts({...sort, currentPage: 1})
+    getPosts({...sort})
   }
+
+  useEffect(() => {
+    setActiveTab(options.findIndex(opt => opt.key === sortBy))
+  }, [sortBy])
 
   const symbol = sortOrder === SORT.sortOrder.DESC ? "▼" : "▲"
 

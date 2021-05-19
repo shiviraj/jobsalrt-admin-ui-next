@@ -15,14 +15,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Posts = (props) => {
-  const {filters, postsCount, reload, getPosts} = props
+  const {filters, postsCount, getPosts} = props
 
   const classes = useStyles()
 
   useEffect(() => {
     postsCount()
     getPosts()
-  }, [reload])
+  }, [])
 
   return <div className={classes.root}>
     <PostsContainer {...props}/>
