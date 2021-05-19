@@ -1,13 +1,23 @@
 const ROUTES = {}
 
+ROUTES.LOGIN = {
+  url: '/login',
+  options: {skipUserValidation: true}
+}
+
 ROUTES.HOME = {
   url: '/',
   options: {nav: true}
 }
 
-ROUTES.LOGIN = {
-  url: '/login',
-  options: {skipUserValidation: true}
+ROUTES.POSTS = {
+  url: '/posts',
+  options: {nav: true}
+}
+
+ROUTES.EDIT_POST = {
+  url: '/posts/[url]',
+  options: {nav: true}
 }
 
 ROUTES.THANK_YOU = {

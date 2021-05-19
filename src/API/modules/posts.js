@@ -16,7 +16,6 @@ const posts = (host = '') => {
       return utils.fetch(`${host}/api/posts`, options)
     },
     deletePost(url) {
-      console.log(url)
       const options = {method: METHODS.DELETE}
       return utils.fetch(`${host}/api/posts/${url}`, options)
     },

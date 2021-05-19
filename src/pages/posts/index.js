@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
-import Posts from "../modules/posts";
-import {getPosts, postsCount} from "../modules/posts/actions";
+import Posts from "../../modules/posts";
+import {getPosts, postsCount} from "../../modules/posts/actions";
 
 export const mapStateToProps = state => {
   return {
