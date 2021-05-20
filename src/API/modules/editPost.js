@@ -1,20 +1,20 @@
 import utils from '../utils'
 import {METHODS} from "../constants";
 
-const posts = (host = '') => {
+const post = (host = '') => {
   return {
     getPost(url) {
-      return utils.fetch(`${host}/api/posts/${url}`)
+      return utils.fetch(`${host}/api/post/${url}`)
     },
     urlAvailable(url) {
-      return utils.fetch(`${host}/api/posts/${url}/available`)
+      return utils.fetch(`${host}/api/post/${url}/available`)
     },
     updatePost(post, url) {
       const options = {method: METHODS.PUT, data: post}
-      return utils.fetch(`${host}/api/posts/${url || post.basicDetails.url}`, options)
+      return utils.fetch(`${host}/api/post/${url || post.basicDetails.url}`, options)
     }
   }
 }
 
 
-export default posts
+export default post

@@ -1,12 +1,12 @@
 import React from 'react'
 import Header from "./Header";
-import store from "../../store";
+import {useRouter} from "next/router";
 
 const Layout = ({children}) => {
-  const user = store.getState().user
+  const router = useRouter()
   return (
     <React.Fragment>
-      {user && <Header/>}
+      {router.pathname !== "/login" && <Header/>}
       {/*{displayNavigation && device === devices.DESKTOP && <DesktopNav/>}*/}
       <div>{children}</div>
     </React.Fragment>

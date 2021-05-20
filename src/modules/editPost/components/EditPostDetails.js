@@ -36,6 +36,16 @@ const useStyles = makeStyles((theme) => ({
   submitButton: {
     margin: theme.spacing(2)
   },
+  stateContainer: {
+    display: "flex",
+    flexDirection: "column",
+    marginRight: theme.spacing(2)
+  },
+  createdAt: {
+    margin: theme.spacing(-2, 0, 0, 6),
+    fontSize: theme.spacing(1.5),
+    textAlign: "right"
+  }
 }))
 
 const states = [
@@ -139,7 +149,8 @@ const EditPostDetails = ({post, savePost}) => {
         <FormGroup row>
           {
             states.map(state => {
-              return <FormControlLabel
+              const {createdAt} = post.states.find(st => st.type === state.value) || {}
+              return <div className={classes.stateContainer}><FormControlLabel
                 key={state.value}
                 control={
                   <Checkbox name="checkedA"
@@ -147,14 +158,19 @@ const EditPostDetails = ({post, savePost}) => {
                             onChange={(e, p) => handleStateChange(state.value, p)}
                             color="primary"/>}
                 label={state.name}/>
+                {createdAt && <div className={classes.createdAt}>({createdAt})</div>}
+              </div>
             })
           }
         </FormGroup>
       </FormControl>
     </div>}
 
-    {activeTab === 1 &&
-    <EditArray post={failures} keyName="failures" setPost={setFailures} triggerSubmit={handleUpdateFailures}/>}
+    {
+      activeTab === 1 &&
+      <EditArray post={failures} keyName="failures" setPost={setFailures}
+                 triggerSubmit={handleUpdateFailures}/>
+    }
 
     <SaveAndSubmitButtons type="submit" fullWidth loading={isUpdating}
                           handleSave={() => setIsSubmit(false)}

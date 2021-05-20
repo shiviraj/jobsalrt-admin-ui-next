@@ -51,12 +51,12 @@ const Login = () => {
     e.preventDefault();
     setLoading(true)
     API.user.login({email, password})
-      .then(({data}) => (setStorage(SessionStorageKeys.AUTH, JSON.stringify(data))))
-      .catch(() => setError("Invalid Credentials, Try Again!!"))
-      .then(() => {
-        setLoading(false)
+      .then(({data}) => {
+        setStorage(SessionStorageKeys.AUTH, JSON.stringify(data))
         redirectTo("/")
       })
+      .catch(() => setError("Invalid Credentials, Try Again!!"))
+      .then(() => setLoading(false))
   };
 
   return (<div className={classes.root} ref={rootRef}>
