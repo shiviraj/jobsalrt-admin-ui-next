@@ -21,7 +21,7 @@ const utils = {
       axios({url, ...options, headers: {...init(), ...options.headers}})
         .then(resolve)
         .catch((error) => {
-          if (error.response && error.response.status === 401) {
+          if (error.response && error.response.status === 403) {
             return handleUnauthorized()
           }
           reject(error)
