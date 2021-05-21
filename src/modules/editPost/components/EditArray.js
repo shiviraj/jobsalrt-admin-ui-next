@@ -5,6 +5,7 @@ import {ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
 import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 import {cloneObject} from "../../../utils/utils";
 import API from "../../../API";
+import {useToast} from "../../../common/components/ToastWrapper";
 
 const useStyles = makeStyles(theme => ({
   root: {margin: theme.spacing(1)},
@@ -37,8 +38,9 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const EditArray = ({keyName, post, savePost}) => {
+const EditArray = ({keyName, post, savePost, url}) => {
   const classes = useStyles()
+  const toast = useToast()
   const [list, setList] = useState(cloneObject(post[keyName]) || []);
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -82,9 +84,9 @@ const EditArray = ({keyName, post, savePost}) => {
   const handleUpdatePost = () => {
     handleSavePost()
     setIsUpdating(true)
-    API.post.updatePost(post)
-      .then(() => ({}))
-      .catch(() => ({}))
+    API.post.updatePost(post, url)
+      .then(() => toast.success("Successfully updated post!!"))
+      .catch(() => toast.error("Failed to update post!!"))
       .then(() => setIsUpdating(false))
   }
 

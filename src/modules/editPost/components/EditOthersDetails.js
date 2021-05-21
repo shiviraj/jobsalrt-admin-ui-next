@@ -5,6 +5,7 @@ import EditObject from "./EditObject";
 import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 import {cloneObject} from "../../../utils/utils";
 import API from "../../../API";
+import {useToast} from "../../../common/components/ToastWrapper";
 
 
 const useStyles = makeStyles(theme => ({
@@ -38,8 +39,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const EditOthersDetails = ({post, savePost}) => {
+const EditOthersDetails = ({post, savePost, url}) => {
   const classes = useStyles()
+  const toast = useToast()
   const [others, setOthers] = useState(cloneObject(post.others) || {})
   const [activeTab, setActiveTab] = useState(0)
   const [isUpdating, setIsUpdating] = useState(false)
@@ -71,9 +73,9 @@ const EditOthersDetails = ({post, savePost}) => {
   const handleUpdatePost = () => {
     handleSavePost()
     setIsUpdating(true)
-    API.post.updatePost(post)
-      .then(() => ({}))
-      .catch(() => ({}))
+    API.post.updatePost(post, url)
+      .then(() => toast.success("Successfully updated post!!"))
+      .catch(() => toast.error("Failed to update post!!"))
       .then(() => setIsUpdating(false))
 
   }

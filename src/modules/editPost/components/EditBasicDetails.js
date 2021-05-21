@@ -5,6 +5,8 @@ import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 import FormInput from "../../../common/components/FormInput";
 import API from "../../../API";
 import {cloneObject} from "../../../utils/utils";
+import {useToast} from "../../../common/components/ToastWrapper";
+import {useRouter} from "next/router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,13 +31,14 @@ const keyTitle = [{key: "name", label: "Post Title", required: true},
   {key: "postLogo", label: "Post Logo Url", required: true},
 ]
 
-const EditBasicDetails = ({post, savePost}) => {
+const EditBasicDetails = ({post, savePost, url}) => {
   const classes = useStyles()
+  const toast = useToast()
+  const router = useRouter()
   const [details, setDetails] = useState(cloneObject(post.basicDetails))
   const [isSubmit, setIsSubmit] = useState(false)
   const [urlAvailable, setUrlAvailble] = useState(true)
   const [isUpdating, setIsUpdating] = useState(false)
-  const [url] = useState(post.url)
 
   useEffect(() => {
       API.post.urlAvailable(details.url)
@@ -44,8 +47,7 @@ const EditBasicDetails = ({post, savePost}) => {
             setUrlAvailble(true)
           else setUrlAvailble(false)
         })
-        .catch(() => {
-        })
+        .catch(() => ({}))
     }, [details.url, post]
   )
 
@@ -62,8 +64,8 @@ const EditBasicDetails = ({post, savePost}) => {
     if (isSubmit && urlAvailable) {
       setIsUpdating(true)
       API.post.updatePost(post, url)
-        .then(() => ({}))
-        .catch(() => ({}))
+        .then(() => toast.success("Successfully updated post!!"))
+        .catch(() => toast.error("Failed to update post!!"))
         .then(() => setIsUpdating(false))
     }
   };

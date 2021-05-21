@@ -1,13 +1,13 @@
 import React, {useRef, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-
 import {Typography} from "@material-ui/core";
 import FormInput from "../../common/components/FormInput";
 import ButtonWithLoader from "../../common/components/ButtonWithLoader";
 import API from "../../API";
 import {setStorage} from "../../utils/storage";
 import {SessionStorageKeys} from "../../constants/storage";
+import {Alert} from "@material-ui/lab";
 import {redirectTo} from "../../utils/routing";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column"
   },
   button: {marginTop: theme.spacing(1),},
-  error: {color: theme.palette.error.main}
+  alert: {margin: theme.spacing(1, 0)}
 }));
 
 const Login = () => {
@@ -52,10 +52,11 @@ const Login = () => {
     setLoading(true)
     API.user.login({email, password})
       .then(({data}) => {
+        // !data.token && throw new Error("Invalid Credentials, Try Again!!")
         setStorage(SessionStorageKeys.AUTH, JSON.stringify(data))
         redirectTo("/")
       })
-      .catch(() => setError("Invalid Credentials, Try Again!!"))
+      .catch(() => setError("Invalid Credentials, Try again!!"))
       .then(() => setLoading(false))
   };
 
@@ -67,7 +68,7 @@ const Login = () => {
     >
       <form className={classes.paper} onSubmit={handleSubmit}>
         <Typography variant="h5">Log In</Typography>
-        <Typography variant="subtitle1" className={classes.error}>{error}</Typography>
+        {error && <Alert severity="error" className={classes.alert}>{error}</Alert>}
         <FormInput type="email" label="Email" onChange={setEmail} autoFocus required/>
         <FormInput type="password" label="Password" onChange={setPwd} required/>
         <ButtonWithLoader loading={loading} variant="contained" size="large" color="primary"

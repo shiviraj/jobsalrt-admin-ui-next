@@ -5,6 +5,7 @@ import FormInput from "../../../common/components/FormInput";
 import ButtonWithLoader from "../../../common/components/ButtonWithLoader";
 import API from "../../../API";
 import {SORT} from "../../../constants/sort";
+import {useToast} from "../../../common/components/ToastWrapper";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -26,6 +27,7 @@ const AddNewPost = ({postsCount, getPosts}) => {
   const [source, setSource] = useState("")
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false)
+  const toast = useToast()
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -34,8 +36,9 @@ const AddNewPost = ({postsCount, getPosts}) => {
       .then(() => {
         getPosts({currentPage: 1, sortBy: SORT.sortBy.CREATED_AT, sortOrder: SORT.sortOrder.DESC, filters: {}})
         postsCount({currentPage: 1})
+        toast.success("Successfully added new post!!")
       })
-      .catch(() => ({}))
+      .catch(() => toast.error("Failed to add new post!!"))
       .then(() => {
         setLoading(false)
         setOpen(false);

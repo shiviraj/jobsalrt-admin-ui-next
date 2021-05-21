@@ -17,6 +17,7 @@ import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 import FormInput from "../../../common/components/FormInput";
 import {cloneObject} from "../../../utils/utils";
 import API from "../../../API";
+import {useToast} from "../../../common/components/ToastWrapper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2)
   },
   createdAt: {
-    margin: theme.spacing(-2, 0, 0, 6),
+    margin: theme.spacing(-1.8, 0, 0, 6),
     fontSize: theme.spacing(1.5),
     textAlign: "right"
   }
@@ -57,8 +58,9 @@ const states = [
   {name: "Admission", value: "ADMISSION"},
 ]
 
-const EditPostDetails = ({post, savePost}) => {
+const EditPostDetails = ({post, savePost, url}) => {
   const classes = useStyles()
+  const toast = useToast()
   const [localPost, updateLocalPost] = useState(cloneObject(post))
   // TODO need to verify failures flow
   const [failures, setFailures] = useState({failures: post.failures} || {})
@@ -96,12 +98,11 @@ const EditPostDetails = ({post, savePost}) => {
     savePost(localPost)
     if (isSubmit) {
       setIsUpdating(true)
-      API.post.updatePost(post)
-        .then(() => ({}))
-        .catch(() => ({}))
+      API.post.updatePost(post, url)
+        .then(() => toast.success("Successfully updated post!!"))
+        .catch(() => toast.error("Failed to update post!!"))
         .then(() => setIsUpdating(false))
     }
-
   };
 
   const handleUpdateFailures = () => {
@@ -158,7 +159,7 @@ const EditPostDetails = ({post, savePost}) => {
                             onChange={(e, p) => handleStateChange(state.value, p)}
                             color="primary"/>}
                 label={state.name}/>
-                {createdAt && <div className={classes.createdAt}>({createdAt})</div>}
+                {createdAt && <div className={classes.createdAt}>({createdAt.split("T")[0]})</div>}
               </div>
             })
           }

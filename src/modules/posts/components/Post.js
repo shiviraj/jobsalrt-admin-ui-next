@@ -3,6 +3,7 @@ import {Box, Button, Modal, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import ButtonWithLoader from "../../../common/components/ButtonWithLoader";
 import API from "../../../API";
+import {useToast} from "../../../common/components/ToastWrapper";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,6 +72,7 @@ const Post = ({post, getPosts, postsCount}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false)
+  const toast = useToast()
 
   const boxBackgrounds = {
     NOT_VERIFIED: classes.error,
@@ -85,10 +87,9 @@ const Post = ({post, getPosts, postsCount}) => {
         getPosts()
         postsCount()
         setOpen(false)
+        toast.success("Successfully deleted post!!")
       })
-      .catch(() => {
-        //TODO error Toast
-      })
+      .catch(() => toast.error("failed to delete post!!"))
       .then(() => setLoading(false))
   }
 
@@ -115,7 +116,7 @@ const Post = ({post, getPosts, postsCount}) => {
 
       <div className={classes.buttonContainer}>
         <Button variant="contained" className={classes.deleteButton} onClick={() => setOpen(true)}>Delete</Button>
-        <Button variant="contained" color="primary" component="a" href={`/posts/${post.url}`}>Edit</Button>
+        <Button variant="contained" color="primary" component="a" href={`/post/${post.url}`}>Edit</Button>
       </div>
     </div>
 
