@@ -10,6 +10,7 @@ import {Router} from "next/router";
 import {validateUser} from "../modules/user/actions";
 import {onRouteChange} from "../utils/routing";
 import ToastWrapper from "../common/components/ToastWrapper";
+import "./app.css"
 
 const MyApp = ({Component, pageProps, ...rest}) => {
   useEffect(() => {
@@ -19,13 +20,13 @@ const MyApp = ({Component, pageProps, ...rest}) => {
   return <Provider store={store}>
     <HeadTag/>
     <ThemeProvider theme={theme}>
-      <ToastWrapper>
-        <WithValidatedProfile {...rest}>
+      <WithValidatedProfile {...rest}>
+        <ToastWrapper>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </WithValidatedProfile>
-      </ToastWrapper>
+        </ToastWrapper>
+      </WithValidatedProfile>
     </ThemeProvider>
   </Provider>
 }
