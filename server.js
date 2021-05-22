@@ -9,7 +9,7 @@ const handle = app.getRequestHandler()
 
 const apiPaths = {
   '/api': {
-    target: 'http://localhost:3001',
+    target: process.env.BFF_URL || 'http://localhost:3001',
     pathRewrite: {
       '^/api': '/api'
     },
@@ -17,23 +17,16 @@ const apiPaths = {
   }
 }
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
-
 app.prepare().then(() => {
   const server = express()
 
-  if (isDevelopment) {
-    server.use("/api", createProxyMiddleware(apiPaths['/api']));
-  }
+  server.use("/api", createProxyMiddleware(apiPaths['/api']));
 
   server.all('*', (req, res) => {
     return handle(req, res)
   })
 
-  server.listen(port, (err) => {
-    if (err) throw err
-    console.log(`> Ready on http://localhost:${port}`)
-  })
+  server.listen(port, () => console.log(`Server is listening on ${port}`))
 }).catch(err => {
   console.log('Error:::::', err)
 })
