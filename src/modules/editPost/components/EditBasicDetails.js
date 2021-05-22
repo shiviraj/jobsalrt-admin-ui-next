@@ -19,9 +19,7 @@ import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 const useStyles = makeStyles((theme) => ({
   container: {display: "flex"},
   right: {borderLeft: `1px solid ${theme.palette.grey[300]}`},
-  innerGrid: {
-    padding: theme.spacing(2)
-  }
+  innerGrid: {padding: theme.spacing(2)}
 }))
 
 const keyTitle = [{key: "name", label: "Post Title", required: true},
@@ -35,6 +33,29 @@ const keyTitle = [{key: "name", label: "Post Title", required: true},
   {key: "maxAgeLimit", label: "Age Limit (Max)", type: 'date', InputLabelProps: {shrink: true}},
   {key: "postLogo", label: "Post Logo Url", required: true},
 ]
+
+const Details = ({details, handleFormTypeChange, updateDetails, urlAvailable, disabled, title}) => {
+  const classes = useStyles()
+  return <div className={classes.innerGrid}>
+    <Typography variant="h6" align="center" color="primary">{title}</Typography>
+    <FormControl component="fieldset" required disabled={disabled}>
+      <FormLabel component="legend">Form Type</FormLabel>
+      <RadioGroup row value={details.formType} onChange={handleFormTypeChange}>
+        <FormControlLabel value="ONLINE" control={<Radio color="primary" disabled={disabled}/>} label="Online"/>
+        <FormControlLabel value="OFFLINE" control={<Radio color="primary" disabled={disabled}/>} label="Offline"/>
+      </RadioGroup>
+    </FormControl>
+    {
+      keyTitle.map(obj => {
+        return <FormInput {...obj} key={obj.label} value={details[obj.key]}
+                          onChange={(value) => updateDetails(obj.key, value)} disabled={disabled}/>
+      })
+    }
+    <FormInput label="Url" value={details.url.split(" ").join("-").toLowerCase()}
+               onChange={(value) => updateDetails("url", value.split(" ").join("-").toLowerCase())} required
+               error={!urlAvailable} disabled={disabled}/>
+  </div>
+}
 
 const EditBasicDetails = ({post, savePost, url, checkUpdate, updates}) => {
   const classes = useStyles()
@@ -76,46 +97,11 @@ const EditBasicDetails = ({post, savePost, url, checkUpdate, updates}) => {
 
   return <Grid container component="form" onSubmit={handleSave}>
     <Grid item xs={checkUpdate ? 6 : 12}>
-      <div className={classes.innerGrid}>
-        <Typography variant="h6" align="center">Current Post</Typography>
-        <FormControl component="fieldset" required>
-          <FormLabel component="legend">Form Type</FormLabel>
-          <RadioGroup row value={details.formType} onChange={handleFormTypeChange}>
-            <FormControlLabel value="ONLINE" control={<Radio color="primary"/>} label="Online"/>
-            <FormControlLabel value="OFFLINE" control={<Radio color="primary"/>} label="Offline"/>
-          </RadioGroup>
-        </FormControl>
-        {
-          keyTitle.map(obj => {
-            return <FormInput {...obj} key={obj.label} value={details[obj.key]}
-                              onChange={(value) => updateDetails(obj.key, value)}/>
-          })
-        }
-        <FormInput label="Url" value={details.url.split(" ").join("-").toLowerCase()}
-                   onChange={(value) => updateDetails("url", value.split(" ").join("-").toLowerCase())} required
-                   error={!urlAvailable}/>
-      </div>
+      <Details disabled={false} handleFormTypeChange={handleFormTypeChange} details={details} title="Current Post"
+               updateDetails={updateDetails} urlAvailable={urlAvailable}/>
     </Grid>
     {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-      <div className={classes.innerGrid}>
-        <Typography variant="h6" align="center">New Updates</Typography>
-        <FormControl component="fieldset" disabled>
-          <FormLabel component="legend">Form Type</FormLabel>
-          <RadioGroup row value={updates.basicDetails.formType} onChange={handleFormTypeChange}>
-            <FormControlLabel value="ONLINE" control={<Radio color="primary" disabled/>} label="Online"/>
-            <FormControlLabel value="OFFLINE" control={<Radio color="primary" disabled/>} label="Offline"/>
-          </RadioGroup>
-        </FormControl>
-        {
-          keyTitle.map(obj => {
-            return <FormInput {...obj} key={obj.label} value={updates.basicDetails[obj.key]}
-                              onChange={(value) => updateDetails(obj.key, value)} disabled/>
-          })
-        }
-        <FormInput label="Url" value={updates.basicDetails.url.split(" ").join("-").toLowerCase()}
-                   onChange={(value) => updateDetails("url", value.split(" ").join("-").toLowerCase())} required
-                   error={!urlAvailable} disabled/>
-      </div>
+      <Details disabled={true} details={updates.basicDetails} title="New Updates" urlAvailable={urlAvailable}/>
     </Grid>}
     <Grid item xs={12}>
       <Divider/>

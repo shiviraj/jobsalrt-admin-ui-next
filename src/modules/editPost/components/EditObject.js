@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, FilledInput, IconButton, Paper, TextField, Typography} from "@material-ui/core";
+import {Button, Divider, FilledInput, Grid, IconButton, TextField, Typography} from "@material-ui/core";
 import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
 import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 import {cloneObject} from "../../../utils/utils";
 
 const useStyles = makeStyles(theme => ({
   root: {margin: theme.spacing(1)},
+  right: {borderLeft: `1px solid ${theme.palette.grey[300]}`},
+  innerGrid: {padding: theme.spacing(2)},
   row: {
     display: "flex",
     width: "100%",
@@ -35,9 +37,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const EditObject = ({keyName, post, savePost, updatePost, isUpdating, visible, ...rest}) => {
+
+const ObjectDetails = ({obj, setObj, disabled, title}) => {
   const classes = useStyles()
-  const [obj, setObj] = useState(cloneObject(post[keyName]) || {header: [], body: []});
   const [colNo, setColNo] = useState(2);
 
   const updateObj = () => setObj({...obj});
@@ -92,6 +94,60 @@ const EditObject = ({keyName, post, savePost, updatePost, isUpdating, visible, .
     updateObj();
   };
 
+  return <React.Fragment>
+    <div className={classes.innerGrid}>
+      <Typography variant="h6" align="center" color="primary">{title}</Typography>
+      <div className={classes.row}>
+        {obj.header.length !== 0
+          ? obj.header.map((value, index) => {
+            return <FilledInput className={classes.cell} value={value} key={`key-${index}`} multiline fullWidth
+                                disabled={disabled}
+                                onChange={(event) => updateHeader(index, event.target.value)}/>
+          })
+          : <Typography className={classes.cell} align="center" variant="h5">Header</Typography>
+        }
+        <div className={`${classes.actionCell} ${classes.cell}`}>
+          <IconButton className={classes.button} onClick={removeHeader} disabled={disabled}><Close
+            fontSize="large"/></IconButton>
+          <IconButton className={classes.button} onClick={addHeader} disabled={disabled}><Add
+            fontSize="large"/></IconButton>
+        </div>
+      </div>
+
+      {
+        obj.body.map((row, rowIndex) => (
+          <div className={classes.row} key={rowIndex}>
+            {row.map((value, colIndex) => {
+              return <FilledInput className={classes.cell} value={value}
+                                  key={`cell-${rowIndex}-${colIndex}`} multiline fullWidth disabled={disabled}
+                                  onChange={(event) => updateBody(rowIndex, colIndex, event.target.value)}/>
+            })}
+            <div className={`${classes.actionCell} ${classes.cell}`}>
+              <IconButton className={classes.button} onClick={() => removeRow(rowIndex)}
+                          disabled={disabled}><Close/></IconButton>
+              <IconButton className={classes.button} disabled={disabled}
+                          onClick={() => moveDown(rowIndex)}><ArrowDownward/></IconButton>
+              <IconButton className={classes.button} onClick={() => moveUp(rowIndex)} disabled={disabled}><ArrowUpward/></IconButton>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div className={classes.addRowButton}>
+      {obj.body.length === 0 &&
+      <TextField label="Total Columns" variant="outlined" size="small" type="number" value={colNo}
+                 onChange={(event) => setColNo(+event.target.value)}/>}
+      <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
+    </div>
+  </React.Fragment>
+}
+
+
+const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdate, updates}) => {
+  const classes = useStyles()
+  const [obj, setObj] = useState(cloneObject(post[keyName]) || {header: [], body: []});
+
   const handleSavePost = () => {
     savePost({[keyName]: obj})
   }
@@ -101,51 +157,21 @@ const EditObject = ({keyName, post, savePost, updatePost, isUpdating, visible, .
     updatePost()
   }
 
-  return (<div className={classes.root} {...rest}>
-    <Paper>
-      <div className={classes.row}>
-        {obj.header.length !== 0
-          ? obj.header.map((value, index) => {
-            return <FilledInput className={classes.cell} value={value} key={`key-${index}`} multiline fullWidth
-                                onChange={(event) => updateHeader(index, event.target.value)}/>
-          })
-          : <Typography className={classes.cell} align="center" variant="h5">Header</Typography>
-        }
-        <div className={`${classes.actionCell} ${classes.cell}`}>
-          <IconButton className={classes.button} onClick={removeHeader}><Close fontSize="large"/></IconButton>
-          <IconButton className={classes.button} onClick={addHeader}><Add fontSize="large"/></IconButton>
-        </div>
-      </div>
+  return (<Grid container>
+      <Grid item xs={checkUpdate ? 6 : 12}>
+        <ObjectDetails obj={obj} setObj={setObj} title="Current Post"/>
+      </Grid>
 
-      {
-        obj.body.map((row, rowIndex) => (
-          <div className={classes.row} key={rowIndex}>
-            {row.map((value, colIndex) => {
-              return <FilledInput className={classes.cell} value={value}
-                                  key={`cell-${rowIndex}-${colIndex}`} multiline fullWidth
-                                  onChange={(event) => updateBody(rowIndex, colIndex, event.target.value)}/>
-            })}
-            <div className={`${classes.actionCell} ${classes.cell}`}>
-              <IconButton className={classes.button} onClick={() => removeRow(rowIndex)}><Close/></IconButton>
-              <IconButton className={classes.button} onClick={() => moveDown(rowIndex)}><ArrowDownward/></IconButton>
-              <IconButton className={classes.button} onClick={() => moveUp(rowIndex)}><ArrowUpward/></IconButton>
-            </div>
-          </div>
-        ))
-      }
-    </Paper>
+      {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
+        <ObjectDetails obj={updates[keyName] || {header: [], body: []}} disabled title="New Update"/>
+      </Grid>}
 
-    <div className={classes.addRowButton}>
-      {obj.body.length === 0 &&
-      <TextField label="Total Columns" variant="outlined" size="small" type="number" value={colNo}
-                 onChange={(event) => setColNo(+event.target.value)}/>}
-      <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
-    </div>
-
-    {visible &&
-    <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>}
-
-  </div>)
+      <Grid item xs={12}>
+        <Divider/>
+        <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
+      </Grid>
+    </Grid>
+  )
 };
 
 export default EditObject;

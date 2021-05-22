@@ -29,14 +29,17 @@ const EditTextPost = ({active, post, savePost, url, updates, checkUpdate}) => {
     {["vacancyDetails", "ageLimit", "feeDetails", "dates", "importantLinks"].map((key, index) => {
       return active.key === key &&
         <EditObject key={`key-${index}`} keyName={active.key} post={post} savePost={savePost} isUpdating={isUpdating}
-                    updatePost={handleUpdate}/>
+                    updatePost={handleUpdate} checkUpdate={checkUpdate} updates={updates}/>
     })}
     {["howToApply", "selectionProcess"].map(key => {
       return active.key === key &&
-        <EditArray key={active.key} keyName={active.key} post={post} savePost={savePost} url={url}/>
+        <EditArray key={active.key} keyName={active.key} post={post} savePost={savePost} url={url}
+                   checkUpdate={checkUpdate} updates={updates}/>
     })}
-    {active.key === "others" && <EditOthersDetails post={post} savePost={savePost} url={url}/>}
-    {active.key === "postDetails" && <EditPostDetails post={post} savePost={savePost} url={url}/>}
+    {active.key === "others" &&
+    <EditOthersDetails post={post} savePost={savePost} url={url} checkUpdate={checkUpdate} updates={updates}/>}
+    {active.key === "postDetails" &&
+    <EditPostDetails post={post} savePost={savePost} url={url} checkUpdate={checkUpdate} updates={updates}/>}
   </React.Fragment>
 }
 
