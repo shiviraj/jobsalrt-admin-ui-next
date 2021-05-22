@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, Divider, FilledInput, Grid, IconButton, TextField, Typography} from "@material-ui/core";
 import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
-import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 import {cloneObject} from "../../../utils/utils";
+import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
 const useStyles = makeStyles(theme => ({
   root: {margin: theme.spacing(1)},
@@ -134,17 +134,17 @@ const ObjectDetails = ({obj, setObj, disabled, title}) => {
       }
     </div>
 
-    <div className={classes.addRowButton}>
+    {!disabled && <div className={classes.addRowButton}>
       {obj.body.length === 0 &&
       <TextField label="Total Columns" variant="outlined" size="small" type="number" value={colNo}
                  onChange={(event) => setColNo(+event.target.value)}/>}
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
-    </div>
+    </div>}
   </React.Fragment>
 }
 
 
-const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdate, updates}) => {
+const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdate, updates, disabled}) => {
   const classes = useStyles()
   const [obj, setObj] = useState(cloneObject(post[keyName]) || {header: [], body: []});
 
@@ -159,17 +159,17 @@ const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdat
 
   return (<Grid container>
       <Grid item xs={checkUpdate ? 6 : 12}>
-        <ObjectDetails obj={obj} setObj={setObj} title="Current Post"/>
+        <ObjectDetails obj={obj} setObj={setObj} title={disabled ? "New Update" : "Current Post"} disabled={disabled}/>
       </Grid>
 
       {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
         <ObjectDetails obj={updates[keyName] || {header: [], body: []}} disabled title="New Update"/>
       </Grid>}
 
-      <Grid item xs={12}>
+      {!disabled && <Grid item xs={12}>
         <Divider/>
         <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
-      </Grid>
+      </Grid>}
     </Grid>
   )
 };

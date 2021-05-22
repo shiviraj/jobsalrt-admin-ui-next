@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, FilledInput, IconButton, Paper} from "@material-ui/core";
-import {ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
+import {Button, Divider, FilledInput, Grid, Paper, Typography} from "@material-ui/core";
 import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 import {cloneObject} from "../../../utils/utils";
 import API from "../../../API";
 import {useToast} from "../../../common/components/ToastWrapper";
+import IconButton from "@material-ui/core/IconButton";
+import {ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   root: {margin: theme.spacing(1)},
+  innerGrid: {padding: theme.spacing(2)},
+  right: {borderLeft: `1px solid ${theme.palette.grey[300]}`},
   row: {
     display: "flex",
     width: "100%",
@@ -38,11 +41,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const EditArray = ({keyName, post, savePost, url, visible, ...rest}) => {
+const ArrayDetails = ({list, setList, disabled, title, disabledTitle}) => {
   const classes = useStyles()
-  const toast = useToast()
-  const [list, setList] = useState(cloneObject(post[keyName]) || []);
-  const [isUpdating, setIsUpdating] = useState(false)
 
   const updateList = () => setList([...list]);
 
@@ -76,6 +76,41 @@ const EditArray = ({keyName, post, savePost, url, visible, ...rest}) => {
     updateList();
   };
 
+  console.log(list)
+
+  return <div className={classes.innerGrid}>
+    {!disabledTitle && <Typography variant="h6" align="center" color="primary">{title}</Typography>}
+    <Paper>
+      {
+        list.map((value, index) => {
+          return <div className={classes.row} key={`key-${index}`}>
+            <FilledInput className={classes.cell} value={value} multiline fullWidth disabled={disabled}
+                         onChange={(event) => updateListItem(index, event.target.value)}/>
+            <div className={`${classes.actionCell} ${classes.cell}`}>
+              <IconButton className={classes.button} onClick={() => removeRow(index)}
+                          disabled={disabled}><Close/></IconButton>
+              <IconButton className={classes.button} onClick={() => moveDown(index)}
+                          disabled={disabled}><ArrowDownward/></IconButton>
+              <IconButton className={classes.button} onClick={() => moveUp(index)}
+                          disabled={disabled}><ArrowUpward/></IconButton>
+            </div>
+          </div>
+        })
+      }
+    </Paper>
+    {!disabled && <div className={classes.addRowButton}>
+      <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
+    </div>}
+
+  </div>
+}
+
+const EditArray = ({keyName, post, savePost, url, checkUpdate, updates, disabled}) => {
+  const classes = useStyles()
+  const toast = useToast()
+  const [list, setList] = useState(cloneObject(post[keyName]) || []);
+  const [isUpdating, setIsUpdating] = useState(false)
+
   const handleSavePost = () => {
     post[keyName] = list
     savePost(post)
@@ -90,31 +125,20 @@ const EditArray = ({keyName, post, savePost, url, visible, ...rest}) => {
       .then(() => setIsUpdating(false))
   }
 
-  return (<div className={classes.root} {...rest}>
-    <Paper>
-      {
-        list.map((value, index) => {
-          return <div className={classes.row} key={`key-${index}`}>
-            <FilledInput className={classes.cell} value={value} multiline fullWidth
-                         onChange={(event) => updateListItem(index, event.target.value)}/>
-            <div className={`${classes.actionCell} ${classes.cell}`}>
-              <IconButton className={classes.button} onClick={() => removeRow(index)}><Close/></IconButton>
-              <IconButton className={classes.button} onClick={() => moveDown(index)}><ArrowDownward/></IconButton>
-              <IconButton className={classes.button} onClick={() => moveUp(index)}><ArrowUpward/></IconButton>
-            </div>
-          </div>
-        })
-      }
-    </Paper>
+  return (<Grid container>
+    <Grid item xs={checkUpdate ? 6 : 12}>
+      <ArrayDetails list={list} setList={setList} title="Current Post" disabledTitle={disabled}/>
+    </Grid>
 
-    <div className={classes.addRowButton}>
-      <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
-    </div>
+    {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
+      <ArrayDetails list={updates[keyName] || []} disabled title="New Update" disabledTitle={disabled}/>
+    </Grid>}
 
-    {visible &&
-    <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>}
-
-  </div>)
+    <Grid item xs={12}>
+      <Divider/>
+      <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
+    </Grid>
+  </Grid>)
 };
 
 export default EditArray;

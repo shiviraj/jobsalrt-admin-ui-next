@@ -7,19 +7,23 @@ import {
   FormControlLabel,
   FormGroup,
   FormLabel,
+  Grid,
   Radio,
   RadioGroup,
   Tab,
-  Tabs
+  Tabs,
+  Typography
 } from "@material-ui/core";
-import EditArray from "./EditArray";
 import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
-import FormInput from "../../../common/components/FormInput";
 import {cloneObject} from "../../../utils/utils";
 import API from "../../../API";
 import {useToast} from "../../../common/components/ToastWrapper";
+import FormInput from "../../../common/components/FormInput";
+import EditArray from "./EditArray";
 
 const useStyles = makeStyles((theme) => ({
+  innerGrid: {padding: theme.spacing(2)},
+  right: {borderLeft: `1px solid ${theme.palette.grey[300]}`},
   root: {
     display: "flex",
     justifyContent: "space-evenly",
@@ -28,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
       width: "98%"
     }
   },
-  divider: {marginTop: theme.spacing(1), marginBottom: theme.spacing(1)},
+  divider: {marginTop: theme.spacing(1)},
   buttonContainer: {
     display: "flex",
     justifyContent: "center",
@@ -58,15 +62,9 @@ const states = [
   {name: "Admission", value: "ADMISSION"},
 ]
 
-const EditPostDetails = ({post, savePost, url, visible, ...rest}) => {
+const PostDetails = ({activeTab, localPost, updateLocalPost, post, title, disabled}) => {
   const classes = useStyles()
-  const toast = useToast()
-  const [localPost, updateLocalPost] = useState(cloneObject(post))
-  // TODO need to verify failures flow
   const [failures, setFailures] = useState({failures: post.failures} || {})
-  const [activeTab, setActiveTab] = useState(0)
-  const [isSubmit, setIsSubmit] = useState(false)
-  const [isUpdating, setIsUpdating] = useState(false)
 
   const updatePost = () => {
     return updateLocalPost({...localPost});
@@ -76,8 +74,6 @@ const EditPostDetails = ({post, savePost, url, visible, ...rest}) => {
     localPost[key] = value
     updatePost()
   }
-
-  console.log(visible, rest)
 
   const handleStateChange = (state, isSelect) => {
     if (isSelect) localPost.states.push({type: state})
@@ -95,42 +91,22 @@ const EditPostDetails = ({post, savePost, url, visible, ...rest}) => {
     updatePost()
   }
 
-  const handleSave = (event) => {
-    event.preventDefault()
-    savePost(localPost)
-    if (isSubmit) {
-      setIsUpdating(true)
-      API.post.updatePost(post, url)
-        .then(() => toast.success("Successfully updated post!!"))
-        .catch(() => toast.error("Failed to update post!!"))
-        .then(() => setIsUpdating(false))
-    }
-  };
-
   const handleUpdateFailures = () => {
     localPost.failures = failures
     updatePost()
   };
 
-  return <form onSubmit={handleSave} {...rest}>
-    <Tabs value={activeTab}
-          indicatorColor="primary"
-          textColor="primary"
-          onChange={(e, value) => setActiveTab(value)}>
-      <Tab label="Common Details"/>
-      <Tab label="Failures"/>
-    </Tabs>
-    <Divider className={classes.divider}/>
-
+  return <div className={classes.innerGrid}>
+    <Typography variant="h6" align="center" color="primary">{title}</Typography>
     {activeTab === 0 && <div className={classes.root}>
       <FormInput label="Source" value={localPost.source} disabled/>
       <FormInput label="Total Views" value={localPost.totalViews ? localPost.totalViews : "0"} disabled/>
       <FormInput label="Created At" value={localPost.createdAt} disabled/>
       <FormInput label="Last Update on" value={localPost.postUpdateDate} disabled/>
-      <FormInput label="Other Source" value={localPost.otherSource}
+      <FormInput label="Other Source" value={localPost.otherSource} disabled={disabled}
                  onChange={(value) => updateDetails("otherSource", value)}/>
 
-      <FormControl component="fieldset" required>
+      <FormControl component="fieldset" required disabled={disabled}>
         <FormLabel component="legend">Status</FormLabel>
         <RadioGroup row value={localPost.status} onChange={handleStatusChange}>
           <FormControlLabel value="NOT_VERIFIED" control={<Radio color="primary"/>} label="Not Verified"/>
@@ -139,7 +115,7 @@ const EditPostDetails = ({post, savePost, url, visible, ...rest}) => {
         </RadioGroup>
       </FormControl>
 
-      <FormControl component="fieldset" required>
+      <FormControl component="fieldset" required disabled={disabled}>
         <FormLabel component="legend">Update Available</FormLabel>
         <RadioGroup row value={localPost.isUpdateAvailable.toString()} onChange={handleUpdateAvailbleChange}>
           <FormControlLabel value="true" control={<Radio color="primary"/>} label="True"/>
@@ -147,7 +123,7 @@ const EditPostDetails = ({post, savePost, url, visible, ...rest}) => {
         </RadioGroup>
       </FormControl>
 
-      <FormControl component="fieldset" required>
+      <FormControl component="fieldset" required disabled={disabled}>
         <FormLabel component="legend">State</FormLabel>
         <FormGroup row>
           {
@@ -172,14 +148,61 @@ const EditPostDetails = ({post, savePost, url, visible, ...rest}) => {
     {
       activeTab === 1 &&
       <EditArray post={failures} keyName="failures" setPost={setFailures}
-                 triggerSubmit={handleUpdateFailures}/>
+                 triggerSubmit={handleUpdateFailures} disabled/>
     }
+  </div>
+}
 
-    {visible && <SaveAndSubmitButtons type="submit" fullWidth loading={isUpdating}
-                                      handleSave={() => setIsSubmit(false)}
-                                      handleSubmit={() => setIsSubmit(true)}
-    />}
+const EditPostDetails = ({post, savePost, url, checkUpdate, updates}) => {
+  const classes = useStyles()
+  const toast = useToast()
+  const [localPost, updateLocalPost] = useState(cloneObject(post))
+  // TODO need to verify failures flow
+  const [activeTab, setActiveTab] = useState(0)
+  const [isSubmit, setIsSubmit] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
 
+
+  const handleSave = (event) => {
+    event.preventDefault()
+    savePost(localPost)
+    if (isSubmit) {
+      setIsUpdating(true)
+      API.post.updatePost(post, url)
+        .then(() => toast.success("Successfully updated post!!"))
+        .catch(() => toast.error("Failed to update post!!"))
+        .then(() => setIsUpdating(false))
+    }
+  };
+
+
+  return <form onSubmit={handleSave}>
+    <Tabs value={activeTab}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={(e, value) => setActiveTab(value)}>
+      <Tab label="Common Details"/>
+      <Tab label="Failures"/>
+    </Tabs>
+    <Divider className={classes.divider}/>
+
+
+    <Grid container>
+      <Grid item xs={checkUpdate ? 6 : 12}>
+        <PostDetails activeTab={activeTab} localPost={localPost} updateLocalPost={updateLocalPost}
+                     title="Current Post" post={post}/>
+      </Grid>
+
+      {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
+        <PostDetails disabled title="New Update" localPost={updates} post={updates} activeTab={activeTab}/>
+      </Grid>}
+
+      <Grid item xs={12}>
+        <Divider/>
+        <SaveAndSubmitButtons type="submit" fullWidth loading={isUpdating} handleSave={() => setIsSubmit(false)}
+                              handleSubmit={() => setIsSubmit(true)}/>
+      </Grid>
+    </Grid>
   </form>
 }
 
