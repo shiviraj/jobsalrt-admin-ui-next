@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, Divider, FilledInput, Grid, Paper, Typography} from "@material-ui/core";
-import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 import {cloneObject} from "../../../utils/utils";
 import API from "../../../API";
 import {useToast} from "../../../common/components/ToastWrapper";
 import IconButton from "@material-ui/core/IconButton";
 import {ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
+import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
 const useStyles = makeStyles(theme => ({
   root: {margin: theme.spacing(1)},
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ArrayDetails = ({list, setList, disabled, title, disabledTitle}) => {
+const ArrayDetails = ({list, setList, disabled, title, checkUpdate}) => {
   const classes = useStyles()
 
   const updateList = () => setList([...list]);
@@ -79,7 +79,7 @@ const ArrayDetails = ({list, setList, disabled, title, disabledTitle}) => {
   console.log(list)
 
   return <div className={classes.innerGrid}>
-    {!disabledTitle && <Typography variant="h6" align="center" color="primary">{title}</Typography>}
+    {checkUpdate && <Typography variant="h6" align="center" color="primary">{title}</Typography>}
     <Paper>
       {
         list.map((value, index) => {
@@ -127,17 +127,17 @@ const EditArray = ({keyName, post, savePost, url, checkUpdate, updates, disabled
 
   return (<Grid container>
     <Grid item xs={checkUpdate ? 6 : 12}>
-      <ArrayDetails list={list} setList={setList} title="Current Post" disabledTitle={disabled}/>
+      <ArrayDetails list={list} setList={setList} title="Current Post" checkUpdate={checkUpdate} disabled={disabled}/>
     </Grid>
 
     {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-      <ArrayDetails list={updates[keyName] || []} disabled title="New Update" disabledTitle={disabled}/>
+      <ArrayDetails list={updates[keyName] || []} title="New Update" disabled checkUpdate/>
     </Grid>}
 
-    <Grid item xs={12}>
+    {!disabled && <Grid item xs={12}>
       <Divider/>
       <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
-    </Grid>
+    </Grid>}
   </Grid>)
 };
 

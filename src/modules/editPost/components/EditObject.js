@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const ObjectDetails = ({obj, setObj, disabled, title}) => {
+const ObjectDetails = ({obj, setObj, disabled, title, checkUpdate}) => {
   const classes = useStyles()
   const [colNo, setColNo] = useState(2);
 
@@ -96,7 +96,7 @@ const ObjectDetails = ({obj, setObj, disabled, title}) => {
 
   return <React.Fragment>
     <div className={classes.innerGrid}>
-      <Typography variant="h6" align="center" color="primary">{title}</Typography>
+      {checkUpdate && <Typography variant="h6" align="center" color="primary">{title}</Typography>}
       <div className={classes.row}>
         {obj.header.length !== 0
           ? obj.header.map((value, index) => {
@@ -159,11 +159,12 @@ const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdat
 
   return (<Grid container>
       <Grid item xs={checkUpdate ? 6 : 12}>
-        <ObjectDetails obj={obj} setObj={setObj} title={disabled ? "New Update" : "Current Post"} disabled={disabled}/>
+        <ObjectDetails obj={obj} setObj={setObj} title={disabled ? "New Update" : "Current Post"} disabled={disabled}
+                       checkUpdate={checkUpdate}/>
       </Grid>
 
       {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-        <ObjectDetails obj={updates[keyName] || {header: [], body: []}} disabled title="New Update"/>
+        <ObjectDetails obj={updates[keyName] || {header: [], body: []}} disabled title="New Update" checkUpdate/>
       </Grid>}
 
       {!disabled && <Grid item xs={12}>

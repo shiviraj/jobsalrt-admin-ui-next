@@ -23,12 +23,12 @@ const PostHeader = ({active, rawPost, setRawPost, post, checked, handleCheckUpda
       </Button>
     </div>
     <div className={classes.titleContainer}>
-      <FormControlLabel
+      {post.isUpdateAvailable && <FormControlLabel
         value="update"
         control={<Switch color="primary" checked={checked} onChange={handleCheckUpdate}/>}
         label="Check Updates"
         labelPlacement="end"
-      />
+      />}
       <Button variant="contained" color="primary" component="a" href={post.source} target="_blank">View Post
         Source</Button>
     </div>

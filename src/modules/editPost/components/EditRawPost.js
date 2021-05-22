@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Button, Link, TextField, Typography} from "@material-ui/core";
+import {Box, Button, Grid, Link, TextField, Typography} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const EditRawPost = ({post, savePost}) => {
+const EditRawPost = ({post, savePost, updates, checkUpdate}) => {
   const {id, source, createdAt, postUpdateAt, totalView, ...rest} = post
   const classes = useStyles()
   const [editablePost, updatePost] = useState(JSON.stringify(rest, null, 8))
@@ -49,10 +49,19 @@ const EditRawPost = ({post, savePost}) => {
               onClick={handleUpdate}>Save</Button>
       <Link target="_blank" href={"https://jsonformatter.curiousconcept.com/"}>Online Json Formatter</Link>
     </div>
+
     <div className={classes.root}>
-      <TextField className={classes.textArea} value={editablePost} variant="outlined" autoFocus multiline
-                 onChange={(event) => updatePost(event.target.value)}
-      />
+      <Grid item xs={checkUpdate ? 6 : 12}>
+        <TextField className={classes.textArea} value={editablePost} variant="outlined" autoFocus multiline
+                   onChange={(event) => updatePost(event.target.value)}
+        />
+      </Grid>
+
+      {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
+        <TextField className={classes.textArea} value={JSON.stringify(updates, null, 8)} variant="outlined" multiline
+                   disabled
+        />
+      </Grid>}
     </div>
   </div>
 }

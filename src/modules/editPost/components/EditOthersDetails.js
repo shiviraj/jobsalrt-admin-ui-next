@@ -129,7 +129,7 @@ const EditOthersDetails = ({post, savePost, url, checkUpdate, updates}) => {
       </Grid>
 
       {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-        <OtherDetails others={updates.others || {}} activeTab={activeTab} disabled title="New Update" disabled/>
+        <OtherDetails others={updates.others || {}} activeTab={activeTab} title="New Update" disabled/>
       </Grid>}
 
       <Grid item xs={12}>

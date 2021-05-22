@@ -65,7 +65,7 @@ const EditPost = (props) => {
         <Divider className={classes.divider}/>
         {
           rawPost
-            ? <EditRawPost post={post} savePost={savePost} checked={checked} updates={updates}/>
+            ? <EditRawPost post={post} savePost={savePost} checkUpdate={checked} updates={updates}/>
             : <EditTextPost active={active} post={post} savePost={savePost} url={oldUrl} checkUpdate={checked}
                             updates={updates}/>
         }

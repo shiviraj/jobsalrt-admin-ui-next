@@ -18,6 +18,19 @@ import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
 const useStyles = makeStyles((theme) => ({
   container: {display: "flex"},
+  halfWidth: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    "&>*": {
+      width: "48%"
+    }
+  },
+  fullWidth: {
+    "&>*": {
+      width: "98%"
+    }
+  },
   right: {borderLeft: `1px solid ${theme.palette.grey[300]}`},
   innerGrid: {padding: theme.spacing(2)}
 }))
@@ -34,10 +47,10 @@ const keyTitle = [{key: "name", label: "Post Title", required: true},
   {key: "postLogo", label: "Post Logo Url", required: true},
 ]
 
-const Details = ({details, handleFormTypeChange, updateDetails, urlAvailable, disabled, title}) => {
+const Details = ({details, handleFormTypeChange, updateDetails, urlAvailable, disabled, title, checkUpdate}) => {
   const classes = useStyles()
-  return <div className={classes.innerGrid}>
-    <Typography variant="h6" align="center" color="primary">{title}</Typography>
+  return <div className={`${classes.innerGrid} ${checkUpdate ? classes.fullWidth : classes.halfWidth}`}>
+    {checkUpdate && <Typography variant="h6" align="center" color="primary">{title}</Typography>}
     <FormControl component="fieldset" required disabled={disabled}>
       <FormLabel component="legend">Form Type</FormLabel>
       <RadioGroup row value={details.formType} onChange={handleFormTypeChange}>
@@ -95,13 +108,14 @@ const EditBasicDetails = ({post, savePost, url, checkUpdate, updates}) => {
     }
   };
 
-  return <Grid container component="form" onSubmit={handleSave}>
+  return <Grid container component="form" onSubmit={handleSave} className={classes.container}>
     <Grid item xs={checkUpdate ? 6 : 12}>
       <Details disabled={false} handleFormTypeChange={handleFormTypeChange} details={details} title="Current Post"
-               updateDetails={updateDetails} urlAvailable={urlAvailable}/>
+               updateDetails={updateDetails} urlAvailable={urlAvailable} checkUpdate={checkUpdate}/>
     </Grid>
     {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-      <Details disabled={true} details={updates.basicDetails} title="New Updates" urlAvailable={urlAvailable}/>
+      <Details disabled={true} details={updates.basicDetails} title="New Updates" urlAvailable={urlAvailable}
+               checkUpdate/>
     </Grid>}
     <Grid item xs={12}>
       <Divider/>

@@ -24,11 +24,16 @@ import EditArray from "./EditArray";
 const useStyles = makeStyles((theme) => ({
   innerGrid: {padding: theme.spacing(2)},
   right: {borderLeft: `1px solid ${theme.palette.grey[300]}`},
-  root: {
+  halfWidth: {
     display: "flex",
-    justifyContent: "space-evenly",
     flexWrap: "wrap",
-    "& > *": {
+    justifyContent: "space-around",
+    "&>*": {
+      width: "48%"
+    }
+  },
+  fullWidth: {
+    "&>*": {
       width: "98%"
     }
   },
@@ -62,7 +67,7 @@ const states = [
   {name: "Admission", value: "ADMISSION"},
 ]
 
-const PostDetails = ({activeTab, localPost, updateLocalPost, post, title, disabled}) => {
+const PostDetails = ({activeTab, localPost, updateLocalPost, post, title, disabled, checkUpdate, updates}) => {
   const classes = useStyles()
   const [failures, setFailures] = useState({failures: post.failures} || {})
 
@@ -97,8 +102,8 @@ const PostDetails = ({activeTab, localPost, updateLocalPost, post, title, disabl
   };
 
   return <div className={classes.innerGrid}>
-    <Typography variant="h6" align="center" color="primary">{title}</Typography>
-    {activeTab === 0 && <div className={classes.root}>
+    {checkUpdate && <Typography variant="h6" align="center" color="primary">{title}</Typography>}
+    {activeTab === 0 && <div className={`${classes.root} ${checkUpdate ? classes.fullWidth : classes.halfWidth}`}>
       <FormInput label="Source" value={localPost.source} disabled/>
       <FormInput label="Total Views" value={localPost.totalViews ? localPost.totalViews : "0"} disabled/>
       <FormInput label="Created At" value={localPost.createdAt} disabled/>
@@ -147,9 +152,9 @@ const PostDetails = ({activeTab, localPost, updateLocalPost, post, title, disabl
 
     {
       activeTab === 1 &&
-      <EditArray post={failures} keyName="failures" setPost={setFailures}
-                 triggerSubmit={handleUpdateFailures} disabled/>
+      <EditArray keyName="failures" post={post} savePost={handleUpdateFailures} updates={updates} disabled={disabled}/>
     }
+
   </div>
 }
 
@@ -175,7 +180,6 @@ const EditPostDetails = ({post, savePost, url, checkUpdate, updates}) => {
     }
   };
 
-
   return <form onSubmit={handleSave}>
     <Tabs value={activeTab}
           indicatorColor="primary"
@@ -189,12 +193,13 @@ const EditPostDetails = ({post, savePost, url, checkUpdate, updates}) => {
 
     <Grid container>
       <Grid item xs={checkUpdate ? 6 : 12}>
-        <PostDetails activeTab={activeTab} localPost={localPost} updateLocalPost={updateLocalPost}
-                     title="Current Post" post={post}/>
+        <PostDetails activeTab={activeTab} localPost={localPost} updateLocalPost={updateLocalPost} updates={updates}
+                     checkUpdate={checkUpdate} title="Current Post" post={post}/>
       </Grid>
 
       {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-        <PostDetails disabled title="New Update" localPost={updates} post={updates} activeTab={activeTab}/>
+        <PostDetails disabled title="New Update" localPost={updates} post={updates} activeTab={activeTab} checkUpdate
+                     updates={updates}/>
       </Grid>}
 
       <Grid item xs={12}>
