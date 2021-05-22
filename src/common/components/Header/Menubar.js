@@ -26,14 +26,14 @@ const useStyles = makeStyles({
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.common.white,
     borderBottom: `3px solid ${theme.palette.primary.dark}`,
-  }
+  },
 });
 
 const Menubar = () => {
   const classes = useStyles();
   const path = useRouter().pathname
 
-  return (<div className={classes.root}>
+  return (<div className={classes.root} id="back-to-top-anchor">
     <ListItem button className={path === "/" ? classes.active : ""}>
       <Link href="/">
         <ListItemText primary="HOME"/>

@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const EditArray = ({keyName, post, savePost, url}) => {
+const EditArray = ({keyName, post, savePost, url, visible, ...rest}) => {
   const classes = useStyles()
   const toast = useToast()
   const [list, setList] = useState(cloneObject(post[keyName]) || []);
@@ -90,7 +90,7 @@ const EditArray = ({keyName, post, savePost, url}) => {
       .then(() => setIsUpdating(false))
   }
 
-  return (<div className={classes.root}>
+  return (<div className={classes.root} {...rest}>
     <Paper>
       {
         list.map((value, index) => {
@@ -111,7 +111,8 @@ const EditArray = ({keyName, post, savePost, url}) => {
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
     </div>
 
-    <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
+    {visible &&
+    <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>}
 
   </div>)
 };

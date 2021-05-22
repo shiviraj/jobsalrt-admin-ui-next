@@ -1,22 +1,27 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from "@material-ui/core";
-import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
-import FormInput from "../../../common/components/FormInput";
+import {
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  Typography
+} from "@material-ui/core";
 import API from "../../../API";
 import {cloneObject} from "../../../utils/utils";
 import {useToast} from "../../../common/components/ToastWrapper";
-import {useRouter} from "next/router";
+import FormInput from "../../../common/components/FormInput";
+import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    justifyContent: "space-evenly",
-    flexWrap: "wrap",
-    "& > *": {
-      width: "48%"
-    }
-  },
+  container: {display: "flex"},
+  right: {borderLeft: `1px solid ${theme.palette.grey[300]}`},
+  innerGrid: {
+    padding: theme.spacing(2)
+  }
 }))
 
 const keyTitle = [{key: "name", label: "Post Title", required: true},
@@ -31,10 +36,9 @@ const keyTitle = [{key: "name", label: "Post Title", required: true},
   {key: "postLogo", label: "Post Logo Url", required: true},
 ]
 
-const EditBasicDetails = ({post, savePost, url}) => {
+const EditBasicDetails = ({post, savePost, url, checkUpdate, updates}) => {
   const classes = useStyles()
   const toast = useToast()
-  const router = useRouter()
   const [details, setDetails] = useState(cloneObject(post.basicDetails))
   const [isSubmit, setIsSubmit] = useState(false)
   const [urlAvailable, setUrlAvailble] = useState(true)
@@ -70,29 +74,55 @@ const EditBasicDetails = ({post, savePost, url}) => {
     }
   };
 
-  return <form onSubmit={handleSave}>
-    <div className={classes.root}>
-      <FormControl component="fieldset" required>
-        <FormLabel component="legend">Form Type</FormLabel>
-        <RadioGroup row value={details.formType} onChange={handleFormTypeChange}>
-          <FormControlLabel value="ONLINE" control={<Radio color="primary"/>} label="Online"/>
-          <FormControlLabel value="OFFLINE" control={<Radio color="primary"/>} label="Offline"/>
-        </RadioGroup>
-      </FormControl>
-      {
-        keyTitle.map(obj => {
-          return <FormInput {...obj} key={obj.label} value={details[obj.key]}
-                            onChange={(value) => updateDetails(obj.key, value)}/>
-        })
-      }
-      <FormInput label="Url" value={details.url.split(" ").join("-").toLowerCase()}
-                 onChange={(value) => updateDetails("url", value.split(" ").join("-").toLowerCase())} required
-                 error={!urlAvailable}/>
-    </div>
-    <SaveAndSubmitButtons type="submit" handleSave={() => setIsSubmit(false)} handleSubmit={() => setIsSubmit(true)}
-                          loading={isUpdating} fullWidth/>
-
-  </form>
+  return <Grid container component="form" onSubmit={handleSave}>
+    <Grid item xs={checkUpdate ? 6 : 12}>
+      <div className={classes.innerGrid}>
+        <Typography variant="h6" align="center">Current Post</Typography>
+        <FormControl component="fieldset" required>
+          <FormLabel component="legend">Form Type</FormLabel>
+          <RadioGroup row value={details.formType} onChange={handleFormTypeChange}>
+            <FormControlLabel value="ONLINE" control={<Radio color="primary"/>} label="Online"/>
+            <FormControlLabel value="OFFLINE" control={<Radio color="primary"/>} label="Offline"/>
+          </RadioGroup>
+        </FormControl>
+        {
+          keyTitle.map(obj => {
+            return <FormInput {...obj} key={obj.label} value={details[obj.key]}
+                              onChange={(value) => updateDetails(obj.key, value)}/>
+          })
+        }
+        <FormInput label="Url" value={details.url.split(" ").join("-").toLowerCase()}
+                   onChange={(value) => updateDetails("url", value.split(" ").join("-").toLowerCase())} required
+                   error={!urlAvailable}/>
+      </div>
+    </Grid>
+    {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
+      <div className={classes.innerGrid}>
+        <Typography variant="h6" align="center">New Updates</Typography>
+        <FormControl component="fieldset" disabled>
+          <FormLabel component="legend">Form Type</FormLabel>
+          <RadioGroup row value={updates.basicDetails.formType} onChange={handleFormTypeChange}>
+            <FormControlLabel value="ONLINE" control={<Radio color="primary" disabled/>} label="Online"/>
+            <FormControlLabel value="OFFLINE" control={<Radio color="primary" disabled/>} label="Offline"/>
+          </RadioGroup>
+        </FormControl>
+        {
+          keyTitle.map(obj => {
+            return <FormInput {...obj} key={obj.label} value={updates.basicDetails[obj.key]}
+                              onChange={(value) => updateDetails(obj.key, value)} disabled/>
+          })
+        }
+        <FormInput label="Url" value={updates.basicDetails.url.split(" ").join("-").toLowerCase()}
+                   onChange={(value) => updateDetails("url", value.split(" ").join("-").toLowerCase())} required
+                   error={!urlAvailable} disabled/>
+      </div>
+    </Grid>}
+    <Grid item xs={12}>
+      <Divider/>
+      <SaveAndSubmitButtons type="submit" handleSave={() => setIsSubmit(false)} handleSubmit={() => setIsSubmit(true)}
+                            loading={isUpdating} fullWidth/>
+    </Grid>
+  </Grid>
 }
 
 export default EditBasicDetails

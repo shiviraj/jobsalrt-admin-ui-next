@@ -109,9 +109,10 @@ const Post = ({post, getPosts, postsCount}) => {
       {post.qualification &&
       <Typography variant="body1"><b>Qualification :</b> &nbsp; {post.qualification} </Typography>}
       {post.location && <Typography variant="body1"><b>Location :</b> &nbsp; {post.location} </Typography>}
-      {post.createdAt && <Typography variant="body1"><b>Created At :</b> &nbsp; {post.createdAt} </Typography>}
+      {post.createdAt &&
+      <Typography variant="body1"><b>Created At :</b> &nbsp; {post.createdAt.split("T")[0]} </Typography>}
       {post.postUpdateDate &&
-      <Typography variant="body1"><b>Post Update Date :</b> &nbsp; {post.postUpdateDate} </Typography>}
+      <Typography variant="body1"><b>Post Update At :</b> &nbsp; {post.postUpdateDate.split("T")[0]} </Typography>}
       <Typography variant="body1"><b>Total Views :</b> &nbsp; {post.totalViews} </Typography>
 
       <div className={classes.buttonContainer}>

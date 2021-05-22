@@ -27,6 +27,7 @@ const options = {
   selectionProcess: "Selection Process",
   howToApply: "How To Apply",
   others: "Others",
+  postDetails: "Post Details"
 }
 
 const PostOptions = ({setActive}) => {
@@ -50,10 +51,6 @@ const PostOptions = ({setActive}) => {
         </ListItem>
       })
     }
-    <ListItem button className={options.length === activeTab ? classes.active : ""}
-              onClick={() => setActiveTab(options.length)}>
-      < ListItemText primary="Post Details"/>
-    </ListItem>
   </div>
 }
 

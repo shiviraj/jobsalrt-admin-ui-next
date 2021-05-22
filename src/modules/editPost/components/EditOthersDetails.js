@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const EditOthersDetails = ({post, savePost, url}) => {
+const EditOthersDetails = ({post, savePost, url, visible, ...rest}) => {
   const classes = useStyles()
   const toast = useToast()
   const [others, setOthers] = useState(cloneObject(post.others) || {})
@@ -82,7 +82,7 @@ const EditOthersDetails = ({post, savePost, url}) => {
 
   const handleTabChange = (e, value) => setActiveTab(value);
 
-  return <div>
+  return <div {...rest}>
     <div className={classes.header}>
       <Tabs value={activeTab} indicatorColor="primary" textColor="primary" onChange={handleTabChange}>
         {Object.keys(others).map((key, index) => <Tab key={key} label={key}/>)}
@@ -113,7 +113,8 @@ const EditOthersDetails = ({post, savePost, url}) => {
       })
     }
 
-    <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost} fullWidth/>
+    {visible &&
+    <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost} fullWidth/>}
 
   </div>
 }

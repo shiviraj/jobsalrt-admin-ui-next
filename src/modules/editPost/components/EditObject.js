@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const EditObject = ({keyName, post, savePost, updatePost, isUpdating}) => {
+const EditObject = ({keyName, post, savePost, updatePost, isUpdating, visible, ...rest}) => {
   const classes = useStyles()
   const [obj, setObj] = useState(cloneObject(post[keyName]) || {header: [], body: []});
   const [colNo, setColNo] = useState(2);
@@ -101,7 +101,7 @@ const EditObject = ({keyName, post, savePost, updatePost, isUpdating}) => {
     updatePost()
   }
 
-  return (<div className={classes.root}>
+  return (<div className={classes.root} {...rest}>
     <Paper>
       <div className={classes.row}>
         {obj.header.length !== 0
@@ -142,7 +142,8 @@ const EditObject = ({keyName, post, savePost, updatePost, isUpdating}) => {
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
     </div>
 
-    <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
+    {visible &&
+    <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>}
 
   </div>)
 };

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-evenly",
     flexWrap: "wrap",
     "& > *": {
-      width: "48%"
+      width: "98%"
     }
   },
   divider: {marginTop: theme.spacing(1), marginBottom: theme.spacing(1)},
@@ -58,7 +58,7 @@ const states = [
   {name: "Admission", value: "ADMISSION"},
 ]
 
-const EditPostDetails = ({post, savePost, url}) => {
+const EditPostDetails = ({post, savePost, url, visible, ...rest}) => {
   const classes = useStyles()
   const toast = useToast()
   const [localPost, updateLocalPost] = useState(cloneObject(post))
@@ -76,6 +76,8 @@ const EditPostDetails = ({post, savePost, url}) => {
     localPost[key] = value
     updatePost()
   }
+
+  console.log(visible, rest)
 
   const handleStateChange = (state, isSelect) => {
     if (isSelect) localPost.states.push({type: state})
@@ -110,7 +112,7 @@ const EditPostDetails = ({post, savePost, url}) => {
     updatePost()
   };
 
-  return <form onSubmit={handleSave}>
+  return <form onSubmit={handleSave} {...rest}>
     <Tabs value={activeTab}
           indicatorColor="primary"
           textColor="primary"
@@ -151,14 +153,14 @@ const EditPostDetails = ({post, savePost, url}) => {
           {
             states.map(state => {
               const {createdAt} = post.states.find(st => st.type === state.value) || {}
-              return <div className={classes.stateContainer}><FormControlLabel
-                key={state.value}
-                control={
-                  <Checkbox name="checkedA"
-                            checked={!!localPost.states.find(({type}) => type === state.value)}
-                            onChange={(e, p) => handleStateChange(state.value, p)}
-                            color="primary"/>}
-                label={state.name}/>
+              return <div key={state.value} className={classes.stateContainer}>
+                <FormControlLabel
+                  control={
+                    <Checkbox name="checkedA"
+                              checked={!!localPost.states.find(({type}) => type === state.value)}
+                              onChange={(e, p) => handleStateChange(state.value, p)}
+                              color="primary"/>}
+                  label={state.name}/>
                 {createdAt && <div className={classes.createdAt}>({createdAt.split("T")[0]})</div>}
               </div>
             })
@@ -173,10 +175,10 @@ const EditPostDetails = ({post, savePost, url}) => {
                  triggerSubmit={handleUpdateFailures}/>
     }
 
-    <SaveAndSubmitButtons type="submit" fullWidth loading={isUpdating}
-                          handleSave={() => setIsSubmit(false)}
-                          handleSubmit={() => setIsSubmit(true)}
-    />
+    {visible && <SaveAndSubmitButtons type="submit" fullWidth loading={isUpdating}
+                                      handleSave={() => setIsSubmit(false)}
+                                      handleSubmit={() => setIsSubmit(true)}
+    />}
 
   </form>
 }

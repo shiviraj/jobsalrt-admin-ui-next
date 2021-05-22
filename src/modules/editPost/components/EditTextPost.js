@@ -7,9 +7,11 @@ import EditOthersDetails from "./EditOthersDetails";
 import API from "../../../API";
 import {useToast} from "../../../common/components/ToastWrapper";
 
-const EditTextPost = ({active, post, savePost, url}) => {
+const EditTextPost = ({active, post, savePost, url, updates, checkUpdate}) => {
   const [isUpdating, setIsUpdating] = useState(false)
   const toast = useToast()
+
+  console.log(checkUpdate, updates, "edit test")
 
   const handleUpdate = () => {
     setIsUpdating(true)
@@ -21,7 +23,9 @@ const EditTextPost = ({active, post, savePost, url}) => {
 
 
   return <React.Fragment>
-    {active.key === "basicDetails" && <EditBasicDetails post={post} savePost={savePost} url={url}/>}
+
+    {active.key === "basicDetails" &&
+    <EditBasicDetails post={post} savePost={savePost} url={url} checkUpdate={checkUpdate} updates={updates}/>}
     {["vacancyDetails", "ageLimit", "feeDetails", "dates", "importantLinks"].map((key, index) => {
       return active.key === key &&
         <EditObject key={`key-${index}`} keyName={active.key} post={post} savePost={savePost} isUpdating={isUpdating}
@@ -32,7 +36,7 @@ const EditTextPost = ({active, post, savePost, url}) => {
         <EditArray key={active.key} keyName={active.key} post={post} savePost={savePost} url={url}/>
     })}
     {active.key === "others" && <EditOthersDetails post={post} savePost={savePost} url={url}/>}
-    {!active.key && <EditPostDetails post={post} savePost={savePost} url={url}/>}
+    {active.key === "postDetails" && <EditPostDetails post={post} savePost={savePost} url={url}/>}
   </React.Fragment>
 }
 
