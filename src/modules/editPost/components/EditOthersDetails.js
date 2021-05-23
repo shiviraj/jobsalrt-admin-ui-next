@@ -7,7 +7,6 @@ import API from "../../../API";
 import {useToast} from "../../../common/components/ToastWrapper";
 import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
-
 const useStyles = makeStyles(theme => ({
   root: {},
   innerGrid: {padding: theme.spacing(2)},
@@ -37,10 +36,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 const OtherDetails = ({others, activeTab, setOthers, setActiveTab, updateOthers, handleSavePost, disabled}) => {
   const classes = useStyles()
-
 
   const updateOthersObj = (key, obj) => {
     setOthers({...others, ...obj})
@@ -56,7 +53,6 @@ const OtherDetails = ({others, activeTab, setOthers, setActiveTab, updateOthers,
     delete others[key]
     updateOthers()
   }
-
 
   return <div className={classes.innerGrid}>
     {
@@ -96,7 +92,6 @@ const EditOthersDetails = ({post, savePost, url, checkUpdate, updates}) => {
     updateOthers()
   }
 
-
   const handleSavePost = () => savePost({others})
 
   const handleUpdatePost = () => {
@@ -125,6 +120,7 @@ const EditOthersDetails = ({post, savePost, url, checkUpdate, updates}) => {
     <Grid container>
       <Grid item xs={checkUpdate ? 6 : 12}>
         <OtherDetails others={others} activeTab={activeTab} setOthers={setOthers} updateOthers={updateOthers}
+                      setActiveTab={setActiveTab}
                       handleSavePost={handleSavePost} title="Current Post"/>
       </Grid>
 

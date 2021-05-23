@@ -11,8 +11,6 @@ const EditTextPost = ({active, post, savePost, url, updates, checkUpdate}) => {
   const [isUpdating, setIsUpdating] = useState(false)
   const toast = useToast()
 
-  console.log(checkUpdate, updates, "edit test")
-
   const handleUpdate = () => {
     setIsUpdating(true)
     API.post.updatePost(post, url)
@@ -20,7 +18,6 @@ const EditTextPost = ({active, post, savePost, url, updates, checkUpdate}) => {
       .catch(() => toast.error("Failed to update post!!"))
       .then(() => setIsUpdating(false))
   }
-
 
   return <React.Fragment>
 
