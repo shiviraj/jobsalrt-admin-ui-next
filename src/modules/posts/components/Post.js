@@ -1,18 +1,18 @@
 import React, {useState} from 'react'
-import {Box, Button, Modal, Typography} from "@material-ui/core";
+import {Button, Card, CardActions, CardContent, Modal, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import ButtonWithLoader from "../../../common/components/ButtonWithLoader";
 import API from "../../../API";
 import {useToast} from "../../../common/components/ToastWrapper";
+import ButtonWithLoader from "../../../common/components/ButtonWithLoader";
 
 const useStyles = makeStyles(theme => ({
   root: {
+    margin: theme.spacing(0.5),
+    padding: theme.spacing(0),
     backgroundColor: theme.palette.grey[100],
-    width: theme.spacing(40),
+    maxWidth: "24%",
+    minWidth: theme.spacing(36),
     border: `1px solid ${theme.palette.primary.extraLight}`,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
     '&:hover': {
       boxShadow: theme.shadows[4],
       backgroundColor: theme.palette.grey[400]
@@ -30,13 +30,10 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.success.main,
     }
   },
-  title: {
-    textAlign: "justify",
-  },
+  title: {textAlign: "justify", lineHeight: theme.spacing(0.15)},
   logoContainer: {
     display: 'flex',
     justifyContent: "center",
-    margin: theme.spacing(1),
   },
   logo: {
     height: theme.spacing(8),
@@ -93,34 +90,29 @@ const Post = ({post, getPosts, postsCount}) => {
       .then(() => setLoading(false))
   }
 
-  return <Box m={0.5} p={1} className={`${classes.root} ${boxBackgrounds[post.status]}`}>
-    <Typography variant="h6" className={classes.title}>{post.name}</Typography>
-
-    <div className={classes.logoContainer}>
+  return <Card className={`${classes.root} ${boxBackgrounds[post.status]}`}>
+    <CardContent>
+      <Typography variant="h6" className={classes.title}>{post.name}</Typography>
+    </CardContent>
+    <CardContent className={classes.logoContainer}>
       <img className={classes.logo} src={post.postLogo} alt={post.postLogo}/>
-    </div>
-
-    <div>
+    </CardContent>
+    <CardContent>
       {post.advtNo && <Typography variant="body1"><b>Advt No :</b> &nbsp; {post.advtNo} </Typography>}
       <Typography variant="body1"><b>Form Type :</b> &nbsp; {post.formType} </Typography>
       {post.lastDate && <Typography variant="body1"><b>Last Date :</b> &nbsp; {post.lastDate} </Typography>}
       {post.company && <Typography variant="body1"><b>Company :</b> &nbsp; {post.company} </Typography>}
       {post.totalVacancies && <Typography variant="body1"><b>Vacancy :</b> &nbsp; {post.totalVacancies} </Typography>}
-      {post.qualification &&
-      <Typography variant="body1"><b>Qualification :</b> &nbsp; {post.qualification} </Typography>}
-      {post.location && <Typography variant="body1"><b>Location :</b> &nbsp; {post.location} </Typography>}
       {post.createdAt &&
       <Typography variant="body1"><b>Created At :</b> &nbsp; {post.createdAt.split("T")[0]} </Typography>}
       {post.postUpdateDate &&
       <Typography variant="body1"><b>Post Update At :</b> &nbsp; {post.postUpdateDate.split("T")[0]} </Typography>}
       <Typography variant="body1"><b>Total Views :</b> &nbsp; {post.totalViews} </Typography>
-
-      <div className={classes.buttonContainer}>
-        <Button variant="contained" className={classes.deleteButton} onClick={() => setOpen(true)}>Delete</Button>
-        <Button variant="contained" color="primary" component="a" href={`/post/${post.url}`}>Edit</Button>
-      </div>
-    </div>
-
+    </CardContent>
+    <CardActions>
+      <Button variant="contained" className={classes.deleteButton} onClick={() => setOpen(true)}>Delete</Button>
+      <Button variant="contained" color="primary" component="a" href={`/post/${post.url}`}>Edit</Button>
+    </CardActions>
     <Modal open={open} onClose={() => setOpen(false)}>
       <div className={classes.modal}>
         <Typography variant="h5">Do you really want to delete?</Typography>
@@ -131,8 +123,7 @@ const Post = ({post, getPosts, postsCount}) => {
         </div>
       </div>
     </Modal>
-
-  </Box>
+  </Card>
 }
 
 export default Post
