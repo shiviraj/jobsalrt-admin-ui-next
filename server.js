@@ -15,7 +15,7 @@ app.prepare().then(() => {
     if (req.headers.authorization || req.path === "/user/sign-in") {
       return next()
     }
-    res.status(403).redirect("/login")
+    res.sendStatus(403)
   });
 
   server.use('/api', createProxyMiddleware({target, changeOrigin: true, pathRewrite: {'^/api': '/api'},}));
