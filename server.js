@@ -12,7 +12,7 @@ app.prepare().then(() => {
   const server = express()
 
   server.use("/api", (req, res, next) => {
-    if (req.headers.authorization || req.path === "/api/user/sign-in") {
+    if (req.headers.authorization || req.path === "/user/sign-in") {
       return next()
     }
     res.status(403).redirect("/login")
