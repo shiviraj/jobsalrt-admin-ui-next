@@ -60,7 +60,7 @@ const Details = ({details, handleFormTypeChange, updateDetails, urlAvailable, di
     </FormControl>
     {
       keyTitle.map(obj => {
-        return <FormInput {...obj} key={obj.label} value={details[obj.key]}
+        return <FormInput {...obj} key={obj.label} value={details[obj.key]} multiline
                           onChange={(value) => updateDetails(obj.key, value)} disabled={disabled}/>
       })
     }
