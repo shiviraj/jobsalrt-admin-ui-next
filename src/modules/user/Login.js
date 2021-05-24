@@ -51,8 +51,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true)
     API.user.login({email, password})
-      .then(({data}) => {
-        // !data.token && throw new Error("Invalid Credentials, Try Again!!")
+      .then((data) => {
         setStorage(SessionStorageKeys.AUTH, JSON.stringify(data))
         redirectTo("/")
       })

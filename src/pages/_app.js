@@ -1,10 +1,10 @@
+import React, {useEffect} from "react";
 import {Provider} from "react-redux";
 import store from "../store";
 import {ThemeProvider} from "@material-ui/styles";
 import theme from "../theme/theme";
 import HeadTag from "../common/components/HeadTag";
 import Layout from "../common/components/Layout";
-import {useEffect} from "react";
 import {shouldValidateUserFor} from "../config/routes";
 import {Router} from "next/router";
 import {validateUser} from "../modules/user/actions";

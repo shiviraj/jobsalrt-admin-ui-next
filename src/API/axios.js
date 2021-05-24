@@ -1,27 +1,37 @@
-import axios from 'axios'
-import axiosRetry from "axios-retry";
-import {initEncryption} from "./crypto";
+import axios from "axios";
+import {getStorage} from "../utils/storage";
+import {SessionStorageKeys} from "../constants/storage";
+import {handleUnauthorized} from "../utils/auth";
+import {decryptResponse, encryptRequest, iv} from "./crypto";
 
-const initAxios = (authToken, isEncryptionDisabled) => {
-  if (authToken && !isEncryptionDisabled) {
-    const {encryptRequest, decryptResponse} = initEncryption(authToken)
+export const defaultHeaders = {'Content-Type': 'application/json'}
 
-    const axiosErrorHandler = error => {
-      error.response = decryptResponse(error.response)
-      return Promise.reject(error)
-    };
-
-    axios.interceptors.request.use(encryptRequest, axiosErrorHandler)
-
-    axios.interceptors.response.use(decryptResponse, axiosErrorHandler)
-  }
-
-  axiosRetry(axios, {
-    retries: 3,
-    retryCondition: error => !!error.config.shouldRetry
-  })
+const init = () => {
+  const auth = getStorage(SessionStorageKeys.AUTH)
+  const authToken = auth ? auth.token : "defaultsecretkeydefaultsecretkey"
+  const encryptionDisabled = process.env.DISABLE_ENCRYPTION || false;
+  const headers = encryptionDisabled ? {'disable-encryption': encryptionDisabled} : {}
+  return {...defaultHeaders, ...headers, iv: iv.toString("hex"), authorization: authToken}
 }
 
-export {initAxios}
+const utils = {
+  fetch(url, {data, ...options} = {}) {
+    return new Promise((resolve, reject) => {
+        const headers = init()
+        const payload = encryptRequest(data, headers)
+        axios({url, ...options, headers: {...headers, ...options.headers}, data: payload})
+          .then((res) => {
+            resolve(decryptResponse(res.data, headers))
+          })
+          .catch((error) => {
+            if (error.response && error.response.status === 403) {
+              return handleUnauthorized()
+            }
+            reject(error)
+          })
+      }
+    )
+  }
+}
 
-export default axios
+export default utils

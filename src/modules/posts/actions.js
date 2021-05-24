@@ -12,7 +12,7 @@ const postsCount = (payload) => ({
   payload
 })
 
-const postsCountSuccess = ({data}) => ({
+const postsCountSuccess = (data) => ({
   type: POSTS_COUNT_SUCCESS,
   payload: {data}
 })
@@ -28,7 +28,7 @@ const getPosts = (payload) => ({
   payload
 })
 
-const getPostsSuccess = ({data}) => ({
+const getPostsSuccess = (data) => ({
   type: GET_POSTS_SUCCESS,
   payload: {data}
 })

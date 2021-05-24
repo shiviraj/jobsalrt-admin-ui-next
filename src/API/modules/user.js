@@ -1,14 +1,14 @@
-import utils from '../utils'
 import {METHODS} from "../constants";
+import axios from "../axios";
 
 const user = (host = '') => {
   return {
     login(payload) {
       const options = {data: payload, method: METHODS.POST}
-      return utils.fetch(`${host}/api/user/sign-in`, options)
+      return axios.fetch(`${host}/api/user/sign-in`, options)
     },
     validateUser() {
-      return utils.fetch(`${host}/api/user/validate`, {method: METHODS.GET})
+      return axios.fetch(`${host}/api/user/validate`, {method: METHODS.GET})
     }
   }
 }
