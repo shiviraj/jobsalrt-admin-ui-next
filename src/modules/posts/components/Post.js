@@ -4,6 +4,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import API from "../../../API";
 import {useToast} from "../../../common/components/ToastWrapper";
 import ButtonWithLoader from "../../../common/components/ButtonWithLoader";
+import {truncate} from "../../../utils/utils";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,7 +65,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 const Post = ({post, getPosts, postsCount}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
@@ -92,7 +92,7 @@ const Post = ({post, getPosts, postsCount}) => {
 
   return <Card className={`${classes.root} ${boxBackgrounds[post.status]}`}>
     <CardContent>
-      <Typography variant="h6" className={classes.title}>{post.name}</Typography>
+      <Typography variant="h6" className={classes.title}>{truncate(50)(post.name)}</Typography>
     </CardContent>
     <CardContent className={classes.logoContainer}>
       <img className={classes.logo} src={post.postLogo} alt={post.postLogo}/>
@@ -101,7 +101,7 @@ const Post = ({post, getPosts, postsCount}) => {
       {post.advtNo && <Typography variant="body1"><b>Advt No :</b> &nbsp; {post.advtNo} </Typography>}
       <Typography variant="body1"><b>Form Type :</b> &nbsp; {post.formType} </Typography>
       {post.lastDate && <Typography variant="body1"><b>Last Date :</b> &nbsp; {post.lastDate} </Typography>}
-      {post.company && <Typography variant="body1"><b>Company :</b> &nbsp; {post.company} </Typography>}
+      {post.company && <Typography variant="body1"><b>Company :</b> &nbsp; {truncate(32)(post.company)} </Typography>}
       {post.totalVacancies && <Typography variant="body1"><b>Vacancy :</b> &nbsp; {post.totalVacancies} </Typography>}
       {post.createdAt &&
       <Typography variant="body1"><b>Created At :</b> &nbsp; {post.createdAt.split("T")[0]} </Typography>}
