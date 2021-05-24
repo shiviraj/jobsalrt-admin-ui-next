@@ -10,7 +10,6 @@ import {Router} from "next/router";
 import {validateUser} from "../modules/user/actions";
 import {onRouteChange} from "../utils/routing";
 import ToastWrapper from "../common/components/ToastWrapper";
-import "./app.css"
 
 const MyApp = ({Component, pageProps, ...rest}) => {
   useEffect(() => {

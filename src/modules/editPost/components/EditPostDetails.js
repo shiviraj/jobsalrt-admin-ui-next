@@ -105,9 +105,9 @@ const PostDetails = ({activeTab, localPost, updateLocalPost, post, title, disabl
     {checkUpdate && <Typography variant="h6" align="center" color="primary">{title}</Typography>}
     {activeTab === 0 && <div className={`${classes.root} ${checkUpdate ? classes.fullWidth : classes.halfWidth}`}>
       <FormInput label="Source" value={localPost.source} disabled/>
-      <FormInput label="Total Views" value={localPost.totalViews ? localPost.totalViews : "0"} disabled/>
-      <FormInput label="Created At" value={localPost.createdAt} disabled/>
-      <FormInput label="Last Update on" value={localPost.postUpdateDate} disabled/>
+      <FormInput label="Total Views" value={localPost.totalViews.toString() } disabled/>
+      <FormInput label="Created At" value={localPost.createdAt.split("T")[0]} disabled/>
+      <FormInput label="Last Update on" value={localPost.postUpdateDate.split("T")[0]} disabled/>
       <FormInput label="Other Source" value={localPost.otherSource} disabled={disabled}
                  onChange={(value) => updateDetails("otherSource", value)}/>
 
