@@ -3,12 +3,12 @@ import axios from "../axios";
 
 const posts = (host = '') => {
   return {
-    postsCount(currentPage, filters, sortBy, sortOrder) {
-      const options = {data: {filters, sortBy, sortOrder}, method: METHODS.POST}
+    postsCount(search, filters, sortBy, sortOrder) {
+      const options = {data: {filters, sortBy, sortOrder, search}, method: METHODS.POST}
       return axios.fetch(`${host}/api/posts/posts-count`, options)
     },
-    getPosts(currentPage, filters, sortBy, sortOrder) {
-      const options = {data: {filters, sortBy, sortOrder}, method: METHODS.POST}
+    getPosts(currentPage, filters, sortBy, sortOrder, search) {
+      const options = {data: {filters, sortBy, sortOrder, search}, method: METHODS.POST}
       return axios.fetch(`${host}/api/posts/page/${currentPage}`, options)
     },
     addNewPost(data) {

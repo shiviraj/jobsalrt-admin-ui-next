@@ -9,7 +9,8 @@ import {
   POSTS_COUNT_ERROR,
   POSTS_COUNT_SUCCESS,
   postsCountError,
-  postsCountSuccess
+  postsCountSuccess,
+  SET_SEARCH
 } from "./actions";
 import API from "../../API";
 import {SORT} from "../../constants/sort";
@@ -19,6 +20,7 @@ const defaultState = () => ({
   error: false,
   errorMessage: null,
   data: [],
+  search: "",
   filters: {},
   currentPage: 1,
   totalPage: 1,
@@ -34,7 +36,7 @@ const userReducer = (state = defaultState(), action) => {
       return loop(
         state,
         Cmd.run(API.posts.postsCount, {
-          args: [state.currentPage, state.filters, state.sortBy, state.sortOrder],
+          args: [state.search, state.filters, state.sortBy, state.sortOrder],
           successActionCreator: postsCountSuccess,
           failActionCreator: postsCountError
         })
@@ -53,7 +55,7 @@ const userReducer = (state = defaultState(), action) => {
       state = {...state, loading: true, error: false, errorMessage: null, data: [], ...action.payload}
       return loop(state,
         Cmd.run(API.posts.getPosts, {
-          args: [state.currentPage, state.filters, state.sortBy, state.sortOrder],
+          args: [state.currentPage, state.filters, state.sortBy, state.sortOrder, state.search],
           successActionCreator: getPostsSuccess,
           failActionCreator: getPostsError
         })
@@ -66,6 +68,10 @@ const userReducer = (state = defaultState(), action) => {
 
     case GET_POSTS_ERROR: {
       return {...state, error: true, loading: false, errorMessage: "Unable to fetch posts. Try Again"}
+    }
+
+    case SET_SEARCH: {
+      return {...state, search: action.payload}
     }
 
     default:

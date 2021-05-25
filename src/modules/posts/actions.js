@@ -6,6 +6,7 @@ export const POSTS_COUNT_ERROR = NAMESPACE + 'POSTS_COUNT_ERROR'
 export const GET_POSTS = NAMESPACE + 'GET_POSTS'
 export const GET_POSTS_SUCCESS = NAMESPACE + 'GET_POSTS_SUCCESS'
 export const GET_POSTS_ERROR = NAMESPACE + 'GET_POSTS_ERROR'
+export const SET_SEARCH = NAMESPACE + 'SET_SEARCH'
 
 const postsCount = (payload) => ({
   type: POSTS_COUNT,
@@ -38,4 +39,9 @@ const getPostsError = ({error}) => ({
   payload: {error}
 })
 
-export {postsCount, postsCountSuccess, postsCountError, getPosts, getPostsSuccess, getPostsError}
+const setSearch = (value) => ({
+  type: SET_SEARCH,
+  payload: value
+})
+
+export {postsCount, postsCountSuccess, postsCountError, getPosts, getPostsSuccess, getPostsError, setSearch}

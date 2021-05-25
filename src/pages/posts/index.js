@@ -14,7 +14,7 @@ export const mapStateToProps = state => {
     totalPosts: state.posts.totalPosts,
     sortBy: state.posts.sortBy,
     sortOrder: state.posts.sortOrder,
-    reload: state.posts.reload
+    search: state.posts.search
   }
 }
 

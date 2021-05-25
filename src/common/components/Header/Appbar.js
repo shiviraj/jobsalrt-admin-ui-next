@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import store from "../../../store";
+import {useRouter} from "next/router";
+import {setSearch} from "../../../modules/posts/actions";
 
 const useStyles = makeStyles((theme) => ({
   grow: {flexGrow: 1,},
@@ -42,12 +44,21 @@ const useStyles = makeStyles((theme) => ({
 const Appbar = () => {
   const classes = useStyles();
   const [userName, setUserName] = useState("")
+  const [searchText, setSearchText] = useState("")
+  const router = useRouter()
 
   const unsubscribe = store.subscribe(() => {
     const {user} = store.getState()
     const userName = user.data && user.data.name
     setUserName(userName)
   })
+
+  const handleChange = (event) => {
+    const value = event.target.value
+    setSearchText(value)
+    if (router.pathname !== "/posts") router.push("/posts").then()
+    store.dispatch(setSearch(value))
+  }
 
   useEffect(() => {
     userName && unsubscribe()
@@ -65,10 +76,12 @@ const Appbar = () => {
           </div>
           <InputBase
             placeholder="Search…"
+            onChange={handleChange}
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
+            value={searchText}
             inputProps={{'aria-label': 'search'}}
           />
         </div>
