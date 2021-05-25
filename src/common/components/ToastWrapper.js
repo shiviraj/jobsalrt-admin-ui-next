@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
 const useToast = () => {
   const {enqueueSnackbar} = useSnackbar();
 
-
   const warning = (message) => {
     enqueueSnackbar(message, {variant: "warning"});
   }

@@ -1,9 +1,12 @@
-import {useToast} from "../common/components/ToastWrapper";
+import React from "react";
+import store from "../store";
+import {setFilters} from "../modules/posts/actions";
+import Home from "../modules/home";
 
-const Home = () => {
-  const toast = useToast();
-  toast.success("Hello Human, Now you are on Jobsalrt Admin Home page ")
-  return (<div>Home</div>);
-};
+const HomePage = () => {
+  const setFilter = (filters) => store.dispatch(setFilters(filters))
+  return <Home setFilters={setFilter}/>
+}
 
-export default Home
+export default HomePage
+

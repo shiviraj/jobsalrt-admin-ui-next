@@ -10,6 +10,7 @@ import {
   POSTS_COUNT_SUCCESS,
   postsCountError,
   postsCountSuccess,
+  SET_FILTERS,
   SET_SEARCH
 } from "./actions";
 import API from "../../API";
@@ -72,6 +73,10 @@ const userReducer = (state = defaultState(), action) => {
 
     case SET_SEARCH: {
       return {...state, search: action.payload}
+    }
+
+    case SET_FILTERS: {
+      return {...state, filters: action.payload}
     }
 
     default:

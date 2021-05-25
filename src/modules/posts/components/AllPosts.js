@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
 const AllPosts = ({posts, loading, getPosts, postsCount}) => {
   const classes = useStyles()
   if (loading) return Array(12).fill("").map((_, index) => <PostSkeleton key={`key-${index}`}/>)
-
   return posts.length
     ? posts.map((post, index) => <Post post={post} key={`${post.source}_${index}`} postsCount={postsCount}
                                        getPosts={getPosts}/>)

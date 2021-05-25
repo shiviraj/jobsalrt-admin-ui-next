@@ -25,6 +25,12 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.error.main,
     }
   },
+  warn: {
+    backgroundColor: theme.palette.warning.light,
+    '&:hover': {
+      backgroundColor: theme.palette.warning.main,
+    }
+  },
   success: {
     backgroundColor: theme.palette.success.light,
     '&:hover': {
@@ -72,9 +78,14 @@ const Post = ({post, getPosts, postsCount}) => {
   const toast = useToast()
 
   const boxBackgrounds = {
+    get(status, isUpdate) {
+      if (isUpdate && status === "VERIFIED") return this.WARN
+      return this[status]
+    },
     NOT_VERIFIED: classes.error,
     VERIFIED: classes.success,
-    DISABLED: classes.disabled
+    DISABLED: classes.disabled,
+    WARN: classes.warn
   }
 
   const handleDelete = () => {
@@ -90,7 +101,7 @@ const Post = ({post, getPosts, postsCount}) => {
       .then(() => setLoading(false))
   }
 
-  return <Card className={`${classes.root} ${boxBackgrounds[post.status]}`}>
+  return <Card className={`${classes.root} ${boxBackgrounds.get(post.status, post.isUpdateAvailable)}`}>
     <CardContent>
       <Typography variant="h6" className={classes.title}>{truncate(50)(post.name)}</Typography>
     </CardContent>
