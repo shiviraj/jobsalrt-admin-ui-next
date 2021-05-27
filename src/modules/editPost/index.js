@@ -47,7 +47,7 @@ const EditPost = (props) => {
     if (!checked) {
       API.post.getUpdates(post.basicDetails.url)
         .then(update => {
-          setUpdates(update.data)
+          setUpdates(update)
           toast.success("Successfully fetched new updates")
         })
         .catch(() => toast.error("Failed to fetch new updates"))
