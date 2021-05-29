@@ -21,7 +21,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const EditRawPost = ({post, savePost, updates, checkUpdate}) => {
-  const {id, source, createdAt, postUpdateAt, totalView, ...rest} = post
+  const {id, source, createdAt, postUpdateAt, totalViews, ...rest} = post
+  const {id: i, source: s, createdAt: c, postUpdateAt: p, totalViews: t, ...update} = updates
   const classes = useStyles()
   const [editablePost, updatePost] = useState(JSON.stringify(rest, null, 8))
   const [error, setError] = useState(false)
@@ -58,7 +59,7 @@ const EditRawPost = ({post, savePost, updates, checkUpdate}) => {
       </Grid>
 
       {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-        <TextField className={classes.textArea} value={JSON.stringify(updates, null, 8)} variant="outlined" multiline
+        <TextField className={classes.textArea} value={JSON.stringify(update, null, 8)} variant="outlined" multiline
                    disabled
         />
       </Grid>}

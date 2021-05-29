@@ -5,15 +5,16 @@ import IconButton from "@material-ui/core/IconButton";
 import {ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
 import {indexesOfDifferentItems, isEqualLength} from "./utils";
 
-const ArrayDetails = ({updatedList, currentList}) => {
+const ArrayDetails = ({updatedList, currentList, disabledTitle}) => {
   const classes = useStyles()
 
   const diffIndexes = indexesOfDifferentItems(currentList, updatedList)
 
   return <div className={classes.innerGrid}>
+    {!disabledTitle &&
     <Typography variant="h6" align="center" color={isEqualLength(currentList, updatedList) ? "primary" : "error"}>
       New Update
-    </Typography>
+    </Typography>}
     <Paper>
       {
         updatedList.map((value, index) => {
