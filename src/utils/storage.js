@@ -1,7 +1,7 @@
 const UNDEFINED = 'undefined'
 
 function storageLocation() {
-  return 'sessionStorage'
+  return 'localStorage'
 }
 
 function setStorage(key, value) {
