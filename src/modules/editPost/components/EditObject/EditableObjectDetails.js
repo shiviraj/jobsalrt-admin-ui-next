@@ -1,44 +1,9 @@
-import React, {useState} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import {Button, Divider, FilledInput, Grid, IconButton, TextField, Typography} from "@material-ui/core";
+import useStyles from "./useStyles";
+import React, {useState} from "react";
+import {Button, FilledInput, IconButton, TextField, Typography} from "@material-ui/core";
 import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
-import {cloneObject} from "../../../utils/utils";
-import SaveAndSubmitButtons from "./SaveAndSubmitButtons";
 
-const useStyles = makeStyles(theme => ({
-  root: {margin: theme.spacing(1)},
-  right: {borderLeft: `1px solid ${theme.palette.grey[300]}`},
-  innerGrid: {padding: theme.spacing(2)},
-  row: {
-    display: "flex",
-    width: "100%",
-    justifyContent: "space-evenly",
-  },
-  cell: {
-    border: `1px solid ${theme.palette.grey[500]}`,
-    backgroundColor: theme.palette.common.white,
-    width: "100%"
-  },
-  actionCell: {
-    display: "flex",
-    width: theme.spacing(30),
-    justifyContent: "space-around",
-    alignItems: "center",
-    border: `1px solid ${theme.palette.grey[500]}`,
-  },
-  button: {
-    margin: theme.spacing(.1),
-    padding: theme.spacing(.5)
-  },
-  addRowButton: {
-    display: "flex",
-    justifyContent: "flex-end",
-    margin: theme.spacing(1)
-  },
-}))
-
-
-const ObjectDetails = ({obj, setObj, disabled, title, checkUpdate}) => {
+const EditableObjectDetails = ({obj, setObj, disabled, title, checkUpdate}) => {
   const classes = useStyles()
   const [colNo, setColNo] = useState(2);
 
@@ -96,7 +61,7 @@ const ObjectDetails = ({obj, setObj, disabled, title, checkUpdate}) => {
 
   return <React.Fragment>
     <div className={classes.innerGrid}>
-      {checkUpdate && <Typography variant="h6" align="center" color="primary">{title}</Typography>}
+      {checkUpdate && <Typography variant="h6" align="center" color="primary">Current Post</Typography>}
       <div className={classes.row}>
         {obj.header.length !== 0
           ? obj.header.map((value, index) => {
@@ -142,37 +107,4 @@ const ObjectDetails = ({obj, setObj, disabled, title, checkUpdate}) => {
     </div>}
   </React.Fragment>
 }
-
-
-const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdate, updates, disabled}) => {
-  const classes = useStyles()
-  const [obj, setObj] = useState(cloneObject(post[keyName]) || {header: [], body: []});
-
-  const handleSavePost = () => {
-    savePost({[keyName]: obj})
-  }
-
-  const handleUpdatePost = () => {
-    handleSavePost()
-    updatePost()
-  }
-
-  return (<Grid container>
-      <Grid item xs={checkUpdate ? 6 : 12}>
-        <ObjectDetails obj={obj} setObj={setObj} title={disabled ? "New Update" : "Current Post"} disabled={disabled}
-                       checkUpdate={checkUpdate}/>
-      </Grid>
-
-      {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-        <ObjectDetails obj={updates[keyName] || {header: [], body: []}} disabled title="New Update" checkUpdate/>
-      </Grid>}
-
-      {!disabled && <Grid item xs={12}>
-        <Divider/>
-        <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
-      </Grid>}
-    </Grid>
-  )
-};
-
-export default EditObject;
+export default EditableObjectDetails

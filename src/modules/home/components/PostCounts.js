@@ -28,7 +28,7 @@ const PostCounts = ({setFilters, filters, disabledSlider, title}) => {
     <StyledTableCell component="th" scope="row">
       {title}
     </StyledTableCell>
-    <StyledTableCell component="th" scope="row" align="center">
+    <StyledTableCell component="th" scope="row">
       {!disabledSlider
         ? loading ? <LinearProgress/> : <PostSlider value={verify.totalPost}/>
         : ""

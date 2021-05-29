@@ -25,7 +25,7 @@ const Home = ({setFilters}) => {
           <TableHead>
             <TableRow>
               <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell>Status</StyledTableCell>
               <StyledTableCell align="right">Count</StyledTableCell>
               <StyledTableCell align="right">Action</StyledTableCell>
             </TableRow>
