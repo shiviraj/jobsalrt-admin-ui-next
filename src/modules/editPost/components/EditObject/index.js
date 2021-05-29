@@ -7,7 +7,7 @@ import EditableObjectDetails from "./EditableObjectDetails";
 import ObjectDetails from "./ObjectDetails";
 
 
-const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdate, updates, disabled}) => {
+const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdate, updates}) => {
   const classes = useStyles()
   const [obj, setObj] = useState(cloneObject(post[keyName]) || {header: [], body: []});
 
@@ -29,10 +29,10 @@ const EditObject = ({keyName, post, savePost, updatePost, isUpdating, checkUpdat
         <ObjectDetails updatedObj={updates[keyName] || {header: [], body: []}} currentObj={obj}/>
       </Grid>}
 
-      {!disabled && <Grid item xs={12}>
+      <Grid item xs={12}>
         <Divider/>
         <SaveAndSubmitButtons loading={isUpdating} handleSave={handleSavePost} handleSubmit={handleUpdatePost}/>
-      </Grid>}
+      </Grid>
     </Grid>
   )
 };

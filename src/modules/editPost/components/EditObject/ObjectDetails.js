@@ -9,7 +9,6 @@ const ObjectDetails = ({updatedObj, currentObj}) => {
 
   const isSame = isSameObject(currentObj, updatedObj)
   const diffIndex = findDiffIndex(currentObj, updatedObj)
-  console.log(diffIndex)
 
   return <React.Fragment>
     <div className={classes.innerGrid}>

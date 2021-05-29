@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Button, FilledInput, IconButton, TextField, Typography} from "@material-ui/core";
 import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
 
-const EditableObjectDetails = ({obj, setObj, disabled, title, checkUpdate}) => {
+const EditableObjectDetails = ({obj, setObj, checkUpdate}) => {
   const classes = useStyles()
   const [colNo, setColNo] = useState(2);
 
@@ -66,16 +66,13 @@ const EditableObjectDetails = ({obj, setObj, disabled, title, checkUpdate}) => {
         {obj.header.length !== 0
           ? obj.header.map((value, index) => {
             return <FilledInput className={classes.cell} value={value} key={`key-${index}`} multiline fullWidth
-                                disabled={disabled}
                                 onChange={(event) => updateHeader(index, event.target.value)}/>
           })
           : <Typography className={classes.cell} align="center" variant="h5">Header</Typography>
         }
         <div className={`${classes.actionCell} ${classes.cell}`}>
-          <IconButton className={classes.button} onClick={removeHeader} disabled={disabled}><Close
-            fontSize="large"/></IconButton>
-          <IconButton className={classes.button} onClick={addHeader} disabled={disabled}><Add
-            fontSize="large"/></IconButton>
+          <IconButton className={classes.button} onClick={removeHeader}><Close fontSize="large"/></IconButton>
+          <IconButton className={classes.button} onClick={addHeader}><Add fontSize="large"/></IconButton>
         </div>
       </div>
 
@@ -84,27 +81,26 @@ const EditableObjectDetails = ({obj, setObj, disabled, title, checkUpdate}) => {
           <div className={classes.row} key={rowIndex}>
             {row.map((value, colIndex) => {
               return <FilledInput className={classes.cell} value={value}
-                                  key={`cell-${rowIndex}-${colIndex}`} multiline fullWidth disabled={disabled}
+                                  key={`cell-${rowIndex}-${colIndex}`} multiline fullWidth
                                   onChange={(event) => updateBody(rowIndex, colIndex, event.target.value)}/>
             })}
             <div className={`${classes.actionCell} ${classes.cell}`}>
-              <IconButton className={classes.button} onClick={() => removeRow(rowIndex)}
-                          disabled={disabled}><Close/></IconButton>
-              <IconButton className={classes.button} disabled={disabled}
+              <IconButton className={classes.button} onClick={() => removeRow(rowIndex)}><Close/></IconButton>
+              <IconButton className={classes.button}
                           onClick={() => moveDown(rowIndex)}><ArrowDownward/></IconButton>
-              <IconButton className={classes.button} onClick={() => moveUp(rowIndex)} disabled={disabled}><ArrowUpward/></IconButton>
+              <IconButton className={classes.button} onClick={() => moveUp(rowIndex)}><ArrowUpward/></IconButton>
             </div>
           </div>
         ))
       }
     </div>
 
-    {!disabled && <div className={classes.addRowButton}>
+    <div className={classes.addRowButton}>
       {obj.body.length === 0 &&
       <TextField label="Total Columns" variant="outlined" size="small" type="number" value={colNo}
                  onChange={(event) => setColNo(+event.target.value)}/>}
       <Button size="small" color="primary" variant="contained" onClick={handleAddRow}>Add Row</Button>
-    </div>}
+    </div>
   </React.Fragment>
 }
 export default EditableObjectDetails

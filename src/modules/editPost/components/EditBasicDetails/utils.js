@@ -7,7 +7,7 @@ const keyTitleDetails = [{key: "name", label: "Post Title", required: true},
   {key: "qualification", label: "Qualification"},
   {key: "minAgeLimit", label: "Age Limit (Min)", type: "date", InputLabelProps: {shrink: true}},
   {key: "maxAgeLimit", label: "Age Limit (Max)", type: 'date', InputLabelProps: {shrink: true}},
-  {key: "postLogo", label: "Post Logo Url", required: true},
+  {key: "postLogo", label: "Post Logo Url"},
 ]
 
 const isSameObject = (obj1, obj2) => {

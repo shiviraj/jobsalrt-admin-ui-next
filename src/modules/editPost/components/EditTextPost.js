@@ -3,7 +3,7 @@ import EditPostDetails from "./EditPostDetails";
 import EditBasicDetails from "./EditBasicDetails";
 import EditObject from "./EditObject";
 import EditArray from "./EditArray";
-import EditOthersDetails from "./EditOthersDetails";
+import EditOtherDetails from "./EditOthersDetails";
 import API from "../../../API";
 import {useToast} from "../../../common/components/ToastWrapper";
 
@@ -34,7 +34,7 @@ const EditTextPost = ({active, post, savePost, url, updates, checkUpdate}) => {
                    checkUpdate={checkUpdate} updates={updates}/>
     })}
     {active.key === "others" &&
-    <EditOthersDetails post={post} savePost={savePost} url={url} checkUpdate={checkUpdate} updates={updates}/>}
+    <EditOtherDetails post={post} savePost={savePost} url={url} checkUpdate={checkUpdate} updates={updates}/>}
     {active.key === "postDetails" &&
     <EditPostDetails post={post} savePost={savePost} url={url} checkUpdate={checkUpdate} updates={updates}/>}
   </React.Fragment>
