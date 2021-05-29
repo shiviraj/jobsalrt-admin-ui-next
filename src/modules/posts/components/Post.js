@@ -8,11 +8,13 @@ import {truncate} from "../../../utils/utils";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: theme.spacing(0.5),
-    padding: theme.spacing(0),
+    margin: theme.spacing(0.25),
+    padding: 0,
     backgroundColor: theme.palette.grey[100],
-    maxWidth: "24%",
-    minWidth: theme.spacing(36),
+    width: "24.25%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
     border: `1px solid ${theme.palette.primary.extraLight}`,
     '&:hover': {
       boxShadow: theme.shadows[4],
@@ -37,14 +39,19 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.success.main,
     }
   },
-  title: {textAlign: "justify", lineHeight: theme.spacing(0.15)},
+  cardContent: {padding: theme.spacing(0.5, 1)},
+  cardActions: {padding: theme.spacing(0.5, 1)},
+  title: {
+    textAlign: "justify", lineHeight: theme.spacing(0.15)
+  },
   logoContainer: {
     display: 'flex',
     justifyContent: "center",
+    padding: theme.spacing(0.5),
   },
   logo: {
-    height: theme.spacing(8),
-    maxWidth: theme.spacing(38)
+    maxHeight: theme.spacing(8),
+    maxWidth: "90%"
   },
   buttonContainer: {
     display: "flex",
@@ -102,25 +109,25 @@ const Post = ({post, getPosts, postsCount}) => {
   }
 
   return <Card className={`${classes.root} ${boxBackgrounds.get(post.status, post.isUpdateAvailable)}`}>
-    <CardContent>
+    <CardContent className={classes.cardContent}>
       <Typography variant="h6" className={classes.title}>{truncate(50)(post.name)}</Typography>
     </CardContent>
     <CardContent className={classes.logoContainer}>
       <img className={classes.logo} src={post.postLogo} alt={post.postLogo}/>
     </CardContent>
     <CardContent>
-      {post.advtNo && <Typography variant="body1"><b>Advt No :</b> &nbsp; {post.advtNo} </Typography>}
-      <Typography variant="body1"><b>Form Type :</b> &nbsp; {post.formType} </Typography>
-      {post.lastDate && <Typography variant="body1"><b>Last Date :</b> &nbsp; {post.lastDate} </Typography>}
-      {post.company && <Typography variant="body1"><b>Company :</b> &nbsp; {truncate(32)(post.company)} </Typography>}
-      {post.totalVacancies && <Typography variant="body1"><b>Vacancy :</b> &nbsp; {post.totalVacancies} </Typography>}
+      {post.advtNo && <Typography variant="body2"><b>Advt No :</b> &nbsp; {post.advtNo} </Typography>}
+      <Typography variant="body2"><b>Form Type :</b> &nbsp; {post.formType} </Typography>
+      {post.lastDate && <Typography variant="body2"><b>Last Date :</b> &nbsp; {post.lastDate} </Typography>}
+      {post.company && <Typography variant="body2"><b>Company :</b> &nbsp; {truncate(32)(post.company)} </Typography>}
+      {post.totalVacancies && <Typography variant="body2"><b>Vacancy :</b> &nbsp; {post.totalVacancies} </Typography>}
       {post.createdAt &&
-      <Typography variant="body1"><b>Created At :</b> &nbsp; {post.createdAt.split("T")[0]} </Typography>}
+      <Typography variant="body2"><b>Created At :</b> &nbsp; {post.createdAt.split("T")[0]} </Typography>}
       {post.postUpdateDate &&
-      <Typography variant="body1"><b>Post Update At :</b> &nbsp; {post.postUpdateDate.split("T")[0]} </Typography>}
-      <Typography variant="body1"><b>Total Views :</b> &nbsp; {post.totalViews} </Typography>
+      <Typography variant="body2"><b>Post Update At :</b> &nbsp; {post.postUpdateDate.split("T")[0]} </Typography>}
+      <Typography variant="body2"><b>Total Views :</b> &nbsp; {post.totalViews} </Typography>
     </CardContent>
-    <CardActions>
+    <CardActions className={classes.cardActions}>
       <Button variant="contained" className={classes.deleteButton} onClick={() => setOpen(true)}>Delete</Button>
       <Button variant="contained" color="primary" component="a" href={`/post/${post.url}`}>Edit</Button>
     </CardActions>

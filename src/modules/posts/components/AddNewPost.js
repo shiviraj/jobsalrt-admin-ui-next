@@ -46,10 +46,10 @@ const AddNewPost = ({postsCount, getPosts}) => {
   }
 
   return (<div>
-      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>Add New Post</Button>
+      <Button variant="contained" color="primary" onClick={() => setOpen(true)} size="small">Add New Post</Button>
       <Modal open={open} onClose={() => setOpen(false)}>
         <form className={classes.modal} onSubmit={handleSubmit}>
-          <Typography variant="h5">Enter Post Source</Typography>
+          <Typography variant="h6">Enter Post Source</Typography>
           <FormInput label="Source" value={source} onChange={setSource} required/>
           <ButtonWithLoader loading={loading} type="submit" variant="contained" color="primary" fullWidth>
             Add Post

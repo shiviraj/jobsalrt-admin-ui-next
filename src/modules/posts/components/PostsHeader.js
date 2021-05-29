@@ -10,10 +10,10 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "space-between",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(4),
+    margin: theme.spacing(0, 1, -1, 1),
+
   },
-  postCounts: {marginLeft: theme.spacing(2)},
+  postCounts: {marginLeft: theme.spacing(1)},
 }));
 
 const PostsHeader = ({currentPage, totalPosts, getPosts, sortBy, sortOrder, postsCount}) => {
@@ -26,8 +26,8 @@ const PostsHeader = ({currentPage, totalPosts, getPosts, sortBy, sortOrder, post
   return <React.Fragment>
     <div className={classes.titleContainer}>
       <div className={classes.titleContainer}>
-        <Typography variant="h4">All Posts</Typography>
-        <Typography variant="subtitle1" className={classes.postCounts}>
+        <Typography variant="h5">All Posts</Typography>
+        <Typography variant="subtitle2" className={classes.postCounts}>
           (Showing {start} - {end} posts of {totalPosts} posts)
         </Typography>
       </div>

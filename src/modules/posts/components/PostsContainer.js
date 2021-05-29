@@ -6,11 +6,10 @@ import AllPosts from "./AllPosts";
 import PostsFooter from "./PostsFooter";
 
 const useStyles = makeStyles(theme => ({
-  root: {width: '80%', backgroundColor: theme.palette.common.white, paddingTop: theme.spacing(2)},
+  root: {width: '81.5%', backgroundColor: theme.palette.common.white, paddingTop: theme.spacing(1)},
   postContainer: {display: "flex", flexWrap: "wrap", justifyContent: 'center',},
-  divider: {marginTop: theme.spacing(2), marginBottom: theme.spacing(2)}
+  divider: {margin: theme.spacing(1, 0)}
 }));
-
 
 const PostsContainer = (props) => {
   const {currentPage, totalPosts, totalPage, getPosts, posts, loading, sortBy, sortOrder, postsCount} = props

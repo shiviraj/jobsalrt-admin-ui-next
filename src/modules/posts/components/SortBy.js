@@ -5,11 +5,10 @@ import {SORT} from "../../../constants/sort";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: theme.spacing(0, 4),
+    margin: theme.spacing(0, 2),
     display: "flex",
     alignItems: "center",
   },
-  tab: {marginLeft: theme.spacing(4)}
 }))
 
 const options = [
@@ -37,7 +36,7 @@ const SortBy = ({getPosts, sortBy, sortOrder}) => {
   const symbol = sortOrder === SORT.sortOrder.DESC ? "▼" : "▲"
 
   return <div className={classes.root}>
-    <Typography variant="h6">Sort By </Typography>
+    <Typography variant="subtitle1">Sort By </Typography>
     <Tabs value={activeTab}
           indicatorColor="primary"
           textColor="primary"
@@ -45,7 +44,7 @@ const SortBy = ({getPosts, sortBy, sortOrder}) => {
       {
         options.map((option, index) => {
             const label = `${option.name} ${activeTab === index ? symbol : ""}`
-            return <Tab className={classes.tab} key={`key-${index}`} label={label}/>;
+            return <Tab key={`key-${index}`} label={label}/>;
           }
         )
       }

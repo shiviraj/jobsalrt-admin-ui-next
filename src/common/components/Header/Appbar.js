@@ -10,6 +10,7 @@ import {useRouter} from "next/router";
 import {setSearch} from "../../../modules/posts/actions";
 
 const useStyles = makeStyles((theme) => ({
+  root: {margin: theme.spacing(-1, 0), height: theme.spacing(7)},
   grow: {flexGrow: 1,},
   title: {display: 'none', [theme.breakpoints.up('sm')]: {display: 'block',},},
   search: {
@@ -64,11 +65,11 @@ const Appbar = () => {
     userName && unsubscribe()
   }, [userName])
 
-  return (<AppBar className={classes.grow}>
+  return (<AppBar className={classes.root}>
       <Toolbar>
         <Typography className={classes.title} variant="h6" noWrap>
-          <b>Jobsalrt Admin &nbsp; | </b>
-        </Typography>&nbsp; {userName}
+          <b>Jobsalrt Admin &nbsp; | </b> &nbsp; {userName}
+        </Typography>
         <div className={classes.grow}/>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
