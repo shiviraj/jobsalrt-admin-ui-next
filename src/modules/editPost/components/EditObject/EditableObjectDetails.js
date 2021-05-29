@@ -1,11 +1,18 @@
 import useStyles from "./useStyles";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, FilledInput, IconButton, TextField, Typography} from "@material-ui/core";
 import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
 
 const EditableObjectDetails = ({obj, setObj, checkUpdate}) => {
   const classes = useStyles()
   const [colNo, setColNo] = useState(2);
+
+  useEffect(() => {
+    const body = obj.body.filter(row => row.length)
+    setObj(() => {
+      return {...obj, body}
+    })
+  }, [])
 
   const updateObj = () => setObj({...obj});
 

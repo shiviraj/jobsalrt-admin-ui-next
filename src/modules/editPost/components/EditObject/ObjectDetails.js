@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {FilledInput, IconButton, Typography} from "@material-ui/core";
 import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
 import useStyles from "./useStyles";
@@ -9,6 +9,11 @@ const ObjectDetails = ({updatedObj, currentObj}) => {
 
   const isSame = isSameObject(currentObj, updatedObj)
   const diffIndex = findDiffIndex(currentObj, updatedObj)
+
+  useEffect(() => {
+    updatedObj.body = updatedObj.body.filter(row => row.length)
+    currentObj.body = currentObj.body.filter(row => row.length)
+  }, [])
 
   return <React.Fragment>
     <div className={classes.innerGrid}>
