@@ -52,7 +52,7 @@ const Login = () => {
     setLoading(true)
     API.user.login({email, password})
       .then((data) => {
-        setStorage(SessionStorageKeys.AUTH, JSON.stringify(data))
+        setStorage(SessionStorageKeys.AUTH, data)
         redirectTo("/")
       })
       .catch(() => setError("Invalid Credentials, Try again!!"))
