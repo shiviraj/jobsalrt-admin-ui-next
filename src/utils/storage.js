@@ -6,8 +6,7 @@ function storageLocation() {
 
 function setStorage(key, value) {
   if (typeof window === UNDEFINED) return
-  value = Buffer.from(JSON.stringify(value), "ascii").toString("base64")
-  window[storageLocation()].setItem(key, value)
+  window[storageLocation()].setItem(key, JSON.stringify(value))
 }
 
 function getStorage(key) {
@@ -15,8 +14,7 @@ function getStorage(key) {
 
   const result = window[storageLocation()].getItem(key)
   if (!!result && result !== UNDEFINED) {
-    const data = Buffer.from(result, "base64").toString("ascii")
-    return JSON.parse(data)
+    return JSON.parse(result)
   }
   return UNDEFINED
 }
