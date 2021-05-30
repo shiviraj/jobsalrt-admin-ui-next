@@ -10,13 +10,15 @@ function setStorage(key, value) {
 }
 
 function getStorage(key) {
-  if (typeof window === UNDEFINED) return
+  try {
+    if (typeof window === UNDEFINED) return
 
-  const result = window[storageLocation()].getItem(key)
-  if (!!result && result !== UNDEFINED) {
-    return JSON.parse(result)
+    const result = window[storageLocation()].getItem(key)
+    if (!!result && result !== UNDEFINED) {
+      return JSON.parse(result)
+    }
+  } catch (e) {
   }
-  return UNDEFINED
 }
 
 function clearStorage() {

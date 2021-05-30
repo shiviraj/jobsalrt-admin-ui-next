@@ -8,7 +8,7 @@ const user = (host = '') => {
       return axios.fetch(`${host}/api/user/sign-in`, options)
     },
     validateUser() {
-      return axios.fetch(`${host}/api/user/validate`, {method: METHODS.GET})
+      return axios.fetch(`${host}/api/user/validate`)
     }
   }
 }

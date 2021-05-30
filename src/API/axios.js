@@ -1,13 +1,13 @@
 import axios from "axios";
 import {getStorage} from "../utils/storage";
-import {SessionStorageKeys} from "../constants/storage";
+import {StorageKeys} from "../constants/storage";
 import {handleUnauthorized} from "../utils/auth";
 import {decryptResponse, encryptRequest, iv} from "./crypto";
 
 export const defaultHeaders = {'Content-Type': 'application/json'}
 
 const init = () => {
-  const auth = getStorage(SessionStorageKeys.AUTH)
+  const auth = getStorage(StorageKeys.AUTH)
   const authToken = auth ? auth.token : "defaultsecretkeydefaultsecretkey"
   const encryptionDisabled = process.env.DISABLE_ENCRYPTION || false;
   const headers = encryptionDisabled ? {'disable-encryption': encryptionDisabled} : {}

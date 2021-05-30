@@ -6,7 +6,7 @@ import FormInput from "../../common/components/FormInput";
 import ButtonWithLoader from "../../common/components/ButtonWithLoader";
 import API from "../../API";
 import {setStorage} from "../../utils/storage";
-import {SessionStorageKeys} from "../../constants/storage";
+import {StorageKeys} from "../../constants/storage";
 import {Alert} from "@material-ui/lab";
 import {redirectTo} from "../../utils/routing";
 
@@ -52,7 +52,7 @@ const Login = () => {
     setLoading(true)
     API.user.login({email, password})
       .then((data) => {
-        setStorage(SessionStorageKeys.AUTH, data)
+        setStorage(StorageKeys.AUTH, data)
         redirectTo("/")
       })
       .catch(() => setError("Invalid Credentials, Try again!!"))
