@@ -56,7 +56,7 @@ const filterOptions = {
     {name: "Answer Key", value: "ANSWER_KEY"},
     {name: "Admission", value: "ADMISSION"},
   ],
-  isUpdateAvailable: [
+  updateAvailable: [
     {name: "Update Available", value: true},
     {name: "No Update Available", value: false},
   ],
