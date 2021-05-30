@@ -113,7 +113,7 @@ const Post = ({post, getPosts, postsCount}) => {
       <Typography variant="h6" className={classes.title}>{truncate(50)(post.name)}</Typography>
     </CardContent>
     <CardContent className={classes.logoContainer}>
-      <img className={classes.logo} src={post.postLogo} alt={post.postLogo}/>
+      <img className={classes.logo} src={post.postLogo || "/logo.png"} alt={post.postLogo}/>
     </CardContent>
     <CardContent>
       {post.advtNo && <Typography variant="body2"><b>Advt No :</b> &nbsp; {post.advtNo} </Typography>}
