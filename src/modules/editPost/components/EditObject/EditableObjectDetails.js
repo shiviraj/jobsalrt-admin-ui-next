@@ -9,9 +9,7 @@ const EditableObjectDetails = ({obj, setObj, checkUpdate}) => {
 
   useEffect(() => {
     const body = obj.body.filter(row => row.length)
-    setObj(() => {
-      return {...obj, body}
-    })
+    setObj({...obj, body})
   }, [])
 
   const updateObj = () => setObj({...obj});
