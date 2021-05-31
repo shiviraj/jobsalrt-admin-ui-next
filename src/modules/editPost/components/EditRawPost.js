@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 const EditRawPost = ({post, savePost, updates, checkUpdate}) => {
   const {id, source, createdAt, postUpdateAt, totalViews, ...rest} = post
-  const {id: i, source: s, createdAt: c, postUpdateAt: p, totalViews: t, ...update} = updates
+  const {id: i, source: s, createdAt: c, postUpdateAt: p, totalViews: t, ...update} = updates||{}
   const classes = useStyles()
   const [editablePost, updatePost] = useState(JSON.stringify(rest, null, 8))
   const [error, setError] = useState(false)
