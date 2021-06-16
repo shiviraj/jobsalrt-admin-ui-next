@@ -120,7 +120,7 @@ const Post = ({post, getPosts, postsCount}) => {
       <Typography variant="body2"><b>Form Type :</b> &nbsp; {post.formType} </Typography>
       {post.lastDate && <Typography variant="body2"><b>Last Date :</b> &nbsp; {post.lastDate} </Typography>}
       {post.company && <Typography variant="body2"><b>Company :</b> &nbsp; {truncate(32)(post.company)} </Typography>}
-      {post.totalVacancies && <Typography variant="body2"><b>Vacancy :</b> &nbsp; {post.totalVacancies} </Typography>}
+      {post.vacancies && <Typography variant="body2"><b>Vacancy :</b> &nbsp; {post.vacancies} </Typography>}
       {post.createdAt &&
       <Typography variant="body2"><b>Created At :</b> &nbsp; {post.createdAt.split("T")[0]} </Typography>}
       {post.postUpdateDate &&

@@ -1,7 +1,7 @@
 const keyTitleDetails = [{key: "name", label: "Post Title", required: true},
   {key: "advtNo", label: "Advt No"},
   {key: "lastDate", label: "Last Date", type: "date", InputLabelProps: {shrink: true}},
-  {key: "totalVacancies", label: "Vacancies", type: "number"},
+  {key: "vacancies", label: "Vacancies", type: "number"},
   {key: "location", label: "Location"},
   {key: "company", label: "Company"},
   {key: "qualification", label: "Qualification"},
