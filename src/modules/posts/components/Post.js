@@ -78,6 +78,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const getSource = source => {
+  if (source.includes("sarkariresult")) return "SARKARI RESULT"
+  if (source.includes("jobsarkari")) return "JOB SARKARI"
+  if (source.includes("rojgarresult")) return "ROJGAR RESULT"
+  return source
+}
+
 const Post = ({post, getPosts, postsCount}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false);
@@ -116,7 +123,7 @@ const Post = ({post, getPosts, postsCount}) => {
       <img className={classes.logo} src={post.postLogo || "/logo.png"} alt={post.postLogo}/>
     </CardContent>
     <CardContent>
-      {post.advtNo && <Typography variant="body2"><b>Advt No :</b> &nbsp; {post.advtNo} </Typography>}
+      <Typography variant="body2"><b>Source :</b> &nbsp; {getSource(post.source)} </Typography>
       <Typography variant="body2"><b>Form Type :</b> &nbsp; {post.formType} </Typography>
       {post.lastDate && <Typography variant="body2"><b>Last Date :</b> &nbsp; {post.lastDate} </Typography>}
       {post.company && <Typography variant="body2"><b>Company :</b> &nbsp; {truncate(32)(post.company)} </Typography>}
