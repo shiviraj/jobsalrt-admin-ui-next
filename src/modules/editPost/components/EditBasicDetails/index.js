@@ -7,10 +7,12 @@ import SaveAndSubmitButtons from "../SaveAndSubmitButtons";
 import EditableBasicDetails from "./EditableBasicDetails";
 import BasicDetails from "./BasicDetails";
 import useStyles from "./useStyles";
+import {useRouter} from "next/router";
 
 const EditBasicDetails = ({post, savePost, url, checkUpdate, updates}) => {
   const classes = useStyles()
   const toast = useToast()
+  const router = useRouter()
   const [details, setDetails] = useState(cloneObject(post.basicDetails))
   const [isSubmit, setIsSubmit] = useState(false)
   const [urlAvailable, setUrlAvailble] = useState(true)
@@ -36,13 +38,19 @@ const EditBasicDetails = ({post, savePost, url, checkUpdate, updates}) => {
 
   const handleSave = (event) => {
     event.preventDefault()
+    console.log()
     savePost({basicDetails: details})
     if (isSubmit && urlAvailable) {
       setIsUpdating(true)
       API.post.updatePost(post, url)
         .then(() => toast.success("Successfully updated post!!"))
         .catch(() => toast.error("Failed to update post!!"))
-        .then(() => setIsUpdating(false))
+        .then(() => {
+          setIsUpdating(false);
+          if (router.query.url !== details.url) {
+            router.push(`/post/${details.url}`).then()
+          }
+        })
     }
   };
 
