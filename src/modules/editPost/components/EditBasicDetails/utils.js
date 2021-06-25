@@ -5,8 +5,8 @@ const keyTitleDetails = [{key: "name", label: "Post Title", required: true},
   {key: "location", label: "Location"},
   {key: "company", label: "Company"},
   {key: "qualification", label: "Qualification"},
-  {key: "minAgeLimit", label: "Age Limit (Min)", type: "date", InputLabelProps: {shrink: true}},
-  {key: "maxAgeLimit", label: "Age Limit (Max)", type: 'date', InputLabelProps: {shrink: true}},
+  {key: "minAgeLimit", label: "DOB (Min)", type: "date", InputLabelProps: {shrink: true}},
+  {key: "maxAgeLimit", label: "DOB (Max)", type: 'date', InputLabelProps: {shrink: true}},
   {key: "postLogo", label: "Post Logo Url"},
 ]
 
