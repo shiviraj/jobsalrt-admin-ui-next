@@ -1,6 +1,6 @@
 import {Button, FilledInput, Paper, Typography} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import {ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
+import {Add, Close} from "@material-ui/icons";
 import React from "react";
 import useStyles from "./useStyles";
 
@@ -13,19 +13,8 @@ const EditableArrayDetails = ({list, setList, checkUpdate}) => {
     setList(list.filter((_, index) => index !== rowNo))
   };
 
-  const moveUp = (rowNo) => {
-    if (rowNo === 0) return
-    const temp = list[rowNo]
-    list[rowNo] = list[rowNo - 1]
-    list[rowNo - 1] = temp
-    updateList();
-  };
-
-  const moveDown = (rowNo) => {
-    if (rowNo === list.length - 1) return
-    const temp = list[rowNo]
-    list[rowNo] = list[rowNo + 1]
-    list[rowNo + 1] = temp
+  const addRow = (index) => {
+    list = list.slice(0, index).concat([""], list.slice(index))
     updateList();
   };
 
@@ -49,8 +38,7 @@ const EditableArrayDetails = ({list, setList, checkUpdate}) => {
                          onChange={(event) => updateListItem(index, event.target.value)}/>
             <div className={`${classes.actionCell} ${classes.cell}`}>
               <IconButton className={classes.button} onClick={() => removeRow(index)}><Close/></IconButton>
-              <IconButton className={classes.button} onClick={() => moveDown(index)}><ArrowDownward/></IconButton>
-              <IconButton className={classes.button} onClick={() => moveUp(index)}><ArrowUpward/></IconButton>
+              <IconButton className={classes.button} onClick={() => addRow(index)}><Add/></IconButton>
             </div>
           </div>
         })

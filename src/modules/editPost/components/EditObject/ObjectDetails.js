@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {FilledInput, IconButton, Typography} from "@material-ui/core";
-import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
+import {Add, Close} from "@material-ui/icons";
 import useStyles from "./useStyles";
 import {findDiffIndex, isSameObject} from "./utils";
 
@@ -42,8 +42,7 @@ const ObjectDetails = ({updatedObj, currentObj}) => {
             })}
             <div className={`${classes.actionCell} ${classes.cell}`}>
               <IconButton className={classes.button} disabled><Close/></IconButton>
-              <IconButton className={classes.button} disabled><ArrowDownward/></IconButton>
-              <IconButton className={classes.button} disabled><ArrowUpward/></IconButton>
+              <IconButton className={classes.button} disabled><Add/></IconButton>
             </div>
           </div>
         ))
