@@ -1,7 +1,7 @@
 import useStyles from "./useStyles";
 import React, {useEffect, useState} from "react";
 import {Button, FilledInput, IconButton, TextField, Typography} from "@material-ui/core";
-import {Add, ArrowDownward, ArrowUpward, Close} from "@material-ui/icons";
+import {Add, Close} from "@material-ui/icons";
 
 const EditableObjectDetails = ({obj, setObj, checkUpdate}) => {
   const classes = useStyles()
@@ -19,20 +19,11 @@ const EditableObjectDetails = ({obj, setObj, checkUpdate}) => {
     updateObj();
   };
 
-  const moveUp = (rowNo) => {
-    if (rowNo === 0) return
-    const temp = obj.body[rowNo]
-    obj.body[rowNo] = obj.body[rowNo - 1]
-    obj.body[rowNo - 1] = temp
-    updateObj();
-  };
-
-  const moveDown = (rowNo) => {
-    if (rowNo === obj.body.length - 1) return
-    const temp = obj.body[rowNo]
-    obj.body[rowNo] = obj.body[rowNo + 1]
-    obj.body[rowNo + 1] = temp
-    updateObj();
+  const addRow = (index) => {
+    const colNumber = obj.body[index].length
+    const newRow = Array(colNumber).fill("");
+    obj.body = obj.body.slice(0, index).concat([newRow], obj.body.slice(index))
+    updateObj()
   };
 
   const removeHeader = () => {
@@ -91,9 +82,7 @@ const EditableObjectDetails = ({obj, setObj, checkUpdate}) => {
             })}
             <div className={`${classes.actionCell} ${classes.cell}`}>
               <IconButton className={classes.button} onClick={() => removeRow(rowIndex)}><Close/></IconButton>
-              <IconButton className={classes.button}
-                          onClick={() => moveDown(rowIndex)}><ArrowDownward/></IconButton>
-              <IconButton className={classes.button} onClick={() => moveUp(rowIndex)}><ArrowUpward/></IconButton>
+              <IconButton className={classes.button} onClick={() => addRow(rowIndex)}><Add/></IconButton>
             </div>
           </div>
         ))
