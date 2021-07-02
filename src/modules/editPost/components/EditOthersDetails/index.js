@@ -56,7 +56,7 @@ const EditOtherDetails = ({post, savePost, url, checkUpdate, updates}) => {
       </Grid>
 
       {checkUpdate && updates && <Grid item xs={6} className={classes.right}>
-        <OtherDetails others={others || {}} activeTab={activeTab} updated={updates.others}/>
+        <OtherDetails others={others || {}} activeTab={activeTab} updated={updates.others || {}}/>
       </Grid>}
 
       <Grid item xs={12}>
